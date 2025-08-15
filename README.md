@@ -2,7 +2,7 @@
 # SonosphereAI
 
 ## Description
-**Sonisphereai** is an AI-powered audio generation platform designed to seamlessly blend music and voice synthesis. It enables users to create musical compositions by transforming vocals into instrumentals and vice versa. The platform supports multiple instruments and languages, and includes features like noise reduction and note editing for refined audio output. It's an innovative tool for musicians and poets to transform their creative ideas into complete musical pieces.
+**SonosphereAI** is an AI-powered audio generation platform designed to seamlessly blend music and voice synthesis. It enables users to create musical compositions by transforming vocals into instrumentals and vice versa. The platform supports multiple instruments and languages, and includes features like noise reduction and note editing for refined audio output. It's an innovative tool for musicians and poets to transform their creative ideas into complete musical pieces.
 
 ## Installation
 
