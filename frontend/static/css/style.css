@@ -1,186 +1,268 @@
+/* --- Base Styling & Theme --- */
 body {
-	font: 400 15px/1.8 Lato, sans-serif;
-	color: #777;
+    /* Updated Font Family: Inter for body text */
+    font-family: 'Inter', sans-serif;
+    line-height: 1.8;
+    background-color: #1A1A1A; /* Dark Charcoal Background */
+    color: #F0F0F0; /* Off-White Text for contrast */
+    display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
-h3,
-h4 {
-	margin: 10px 0 30px 0;
-	letter-spacing: 10px;
-	font-size: 20px;
-	color: #111;
+.header-text-custom {
+    font-size: 6rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+
+    padding: 0.5rem;
+
+
+
+}
+#main-content {
+  flex: 1;
 }
 
-.container {
-	padding: 80px 120px;
+h1, h2, h3, h4 {
+    /* Updated Font Family: Poppins for headings */
+    font-family: 'Poppins', sans-serif;
+    color: #A6B0E5; /* NEW Gray-Blue Accent Color: #A6B0E5 */
+    letter-spacing: 2px;
+    font-weight: 600;
 }
 
-.person {
-	border: 10px solid transparent;
-	margin-bottom: 25px;
-	width: 80%;
-	height: 80%;
-	opacity: 0.7;
+
+
+/* Override Bootstrap Default Colors */
+.btn-primary {
+    background-color: #A6B0E5; /* #A6B0E5 Button Background */
+    border-color: #A6B0E5;
+    color: #1A1A1A; /* Dark text for contrast on light button */
+    transition: background-color 0.3s;
+    font-size: 3rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem 6rem;
 }
 
-.person:hover {
-	border-color: #f1f1f1;
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #BEC5F0; /* Lighter shade for hover */
+    border-color: #BEC5F0;
+    color: #1A1A1A;
 }
 
-.carousel-inner img {
-	-webkit-filter: grayscale(90%);
-	filter: grayscale(90%);
-	/* make all photos black and white */
-	width: 100%;
-	/* Set width to 100% */
-	margin: auto;
-}
-
-.carousel-caption h3 {
-	color: #fff !important;
-}
-
-@media (max-width: 600px) {
-	.carousel-caption {
-		display: none;
-		/* Hide the carousel text when the screen is less than 600 pixels wide */
-	}
-}
-
-.bg-1 {
-	background: #2d2d30;
-	color: #bdbdbd;
-}
-
-.bg-1 h3 {
-	color: #fff;
-}
-
-.bg-1 p {
-	font-style: italic;
-}
-
-.list-group-item:first-child {
-	border-top-right-radius: 0;
-	border-top-left-radius: 0;
-}
-
-.list-group-item:last-child {
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.thumbnail {
-	padding: 0 0 15px 0;
-	border: none;
-	border-radius: 0;
-}
-
-.thumbnail p {
-	margin-top: 15px;
-	color: #555;
-}
-
-.btn {
-	padding: 10px 20px;
-	background-color: #333;
-	color: #f1f1f1;
-	border-radius: 0;
-	transition: .2s;
-}
-
-.btn:hover,
-.btn:focus {
-	border: 1px solid #333;
-	background-color: #fff;
-	color: #000;
-}
-
-.modal-header,
-h4,
-.close {
-	background-color: #333;
-	color: #fff !important;
-	text-align: center;
-	font-size: 30px;
-}
-
-.modal-header,
-.modal-body {
-	padding: 40px 50px;
-}
-
-.nav-tabs li a {
-	color: #777;
-}
-
-#googleMap {
-	width: 100%;
-	height: 400px;
-	-webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-}
-
+/* --- Navigation Bar --- */
 .navbar {
-	font-family: Montserrat, sans-serif;
-	margin-bottom: 0;
-	background-color: #2d2d30;
-	border: 0;
-	font-size: 11px !important;
-	letter-spacing: 4px;
-	opacity: 0.9;
+    background-color: #282828;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    margin: 0;
 }
 
-.navbar li a,
-.navbar .navbar-brand {
-	color: #d5d5d5 !important;
+.navbar a {
+    color: #E0E0E0 !important;
+    transition: color 0.3s;
 }
 
-.navbar-nav li a:hover {
-	color: #fff !important;
+.navbar a:hover, .navbar a:focus {
+    color: #A6B0E5 !important; /* #A6B0E5 on hover */
+    background-color: transparent !important;
 }
 
 .navbar-nav li.active a {
-	color: #fff !important;
-	background-color: #29292c !important;
+    color: #A6B0E5 !important; /* #A6B0E5 for active link */
+    background-color: transparent !important;
 }
 
-.navbar-default .navbar-toggle {
-	border-color: transparent;
+.navbar-brand {
+    font-size: 24px !important;
+    font-weight: 700;
 }
 
-.open .dropdown-toggle {
-	color: #fff;
-	background-color: #555 !important;
+/* --- Hero Section --- */
+#hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("../images/ai-data-flow.jpg");
+    background-size: cover;
+    background-position: center;
+    padding: 4rem 2rem;
+    margin-bottom: 0;
+    color: #ffffff;
+    border-radius: 0;
 }
 
-.dropdown-menu li a {
-	color: #000 !important;
+#hero h1 {
+    font-size: 72px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    /* Soft #A6B0E5 glow for hero heading */
+    text-shadow: 0 0 15px rgba(166, 176, 229, 0.9);
+    font-weight: 700;
 }
 
-.dropdown-menu li a:hover {
-	background-color: red !important;
+#hero p {
+    font-size: 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-footer {
-	background-color: #2d2d30;
-	color: #f5f5f5;
-	padding: 32px;
+/* --- Tool Grid Section --- */
+.section-title {
+    margin-top: 0;
+    font-size: 42px;
+    margin-bottom: 5px;
 }
 
-footer a {
-	color: #f5f5f5;
+.section-subtitle {
+    margin-bottom: 60px;
+    font-style: italic;
+    color: #888888;
 }
 
-footer a:hover {
-	color: #777;
-	text-decoration: none;
+#tool-options-grid {
+    margin-top: 40px;
+}
+
+/* ----------------------------------------------------- */
+/* NEW: Bootstrap / React Component Specific Styles */
+/* ----------------------------------------------------- */
+
+/* Main App Card Container */
+.app-card {
+    background-color: #383838; /* Dark panel background */
+    padding: 4rem;
+    margin: 2rem 20rem;
+    border-radius: 8px;
+    border: 1px solid #555;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+
+}
+
+/* Tab Navigation Styling */
+.nav-tabs.app-nav-tabs {
+    border-bottom: 1px solid #555; /* Darker border */
+    margin-bottom: 20px;
+    font-size: 3rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-tabs.app-nav-tabs > li > a {
+    color: #ccc; /* Inactive tab text */
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0;
+    transition: all 0.3s;
+}
+
+.nav-tabs.app-nav-tabs > li > a:hover {
+    color: #A6B0E5; /* Hover text color */
+    background-color: #282828; /* Slightly lighter background on hover */
+    border-color: #282828 #282828 #555;
+}
+
+.nav-tabs.app-nav-tabs > li.active > a,
+.nav-tabs.app-nav-tabs > li.active > a:hover,
+.nav-tabs.app-nav-tabs > li.active > a:focus {
+    color: #A6B0E5 !important; /* Active tab text color (Accent) */
+    background-color: #282828; /* Active tab background */
+    border: 1px solid #555;
+    border-bottom-color: #282828; /* Hides border under active tab */
+    cursor: default;
+}
+
+/* Tab Content Panel Styling */
+.app-tab-content {
+    background-color: #282828; /* Content area background */
+    padding: 6rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+/* Status Panel Styling */
+.app-status-panel {
+    margin-top: 20px;
+    border: 1px solid #555;
+    background-color: #383838;
+    border-radius: 4px;
+}
+.app-status-panel .panel-body {
+    padding: 15px;
+}
+.status-label {
+    font-weight: bold;
+    color: #F0F0F0;
+    margin-bottom: 5px;
+}
+.status-text {
+    font-size: 22px;
+    margin-top: 0;
+}
+
+
+
+/* Input and Select Overrides (Ensuring dark styling for form-control) */
+.form-horizontal .control-label {
+    color: #F0F0F0;
+    font-size: 2rem;
+    padding: 2rem;
+    height: auto;
 }
 
 .form-control {
-	border-radius: 0;
+    font-size: 2rem;
+    padding: 2rem;
+    background-color: #282828; /* Dark background */
+    border: 1px solid #555; /* Dark border */
+    color: #F0F0F0; /* Light text */
+    height: auto;
 }
 
-textarea {
-	resize: none;
+/* INPUT FOCUS STATE */
+.form-control:focus {
+    border-color: #A6B0E5; /* Accent border on focus */
+    box-shadow: 0 0 0 0.2rem rgba(166, 176, 229, 0.4); /* Accent focus glow */
+    background-color: #282828;
+    color: #FFFFFF;
+}
+
+/* File Input button styling (using the existing .file-input class) */
+.file-input {
+    /* Base style for the control itself */
+    padding: 2rem 3rem;
+    font-size: 2rem;
+}
+
+/* For file inputs specifically, we need to style the inner button/text which is hard in BS3 */
+/* The general .form-control styles above help, but for the "Choose File" button color,
+   we rely on the browser's default behavior, which is why a custom class in Tailwind was
+   needed. In pure BS3, this is complex CSS vendor prefixing, so we primarily ensure the background/text is dark. */
+
+
+/* --- Footer --- */
+footer {
+    background-color: #2C2C2C;
+    color: #ccc;
+    padding: 30px 0;
+    border-top: 1px solid #383838;
+}
+
+footer a {
+    color: #A6B0E5; /* #A6B0E5 link */
+}
+
+footer a:hover {
+    color: #BEC5F0; /* Lighter #A6B0E5 link on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .container {
+        padding: 60px 30px;
+    }
+    .form-horizontal .control-label {
+        text-align: left;
+    }
 }

@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noise Reduction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-    <h1>Noise Reduction</h1>
-    <form action="/noise_reduction" method="post">
-        <input type="file" name="audio_file" accept="audio/wav">
-        <button type="submit">Reduce Noise</button>
-    </form>
-</body>
+    <div class="container">
+        <header>
+            <h1>Noise Reduction</h1>
+        </header>
 
+        <main class="content-area">
+            <h2>Upload Audio for Noise Reduction</h2>
+            <form action="/noise_reduction" method="post" enctype="multipart/form-data" class="upload-form">
+                <label for="audio_file">Select .wav Audio File:</label>
+                <input type="file" id="audio_file" name="audio_file" accept="audio/wav" required>
+
+                <button type="submit" class="primary-button">Reduce Noise</button>
+            </form>
+
+            <p class="back-link">
+                <a href="/">Go Back to Main Page</a>
+            </p>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Your App Name</p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='apps.js') }}"></script>
+</body>
 </html>

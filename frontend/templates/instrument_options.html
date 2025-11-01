@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instrument Options</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-    <h1>Instrument Options</h1>
-    <ul>
-        {% for instrument in instruments %}
-        <li>{{ instrument.name }} ({{ instrument.code }})</li>
-        {% endfor %}
-    </ul>
-</body>
+    <div class="container">
+        <header>
+            <h1>Instrument Options</h1>
+        </header>
 
+        <main class="content-area">
+            <h2>Available Instruments</h2>
+            <ul class="instrument-list">
+                {% for instrument in instruments %}
+                <li class="instrument-item">
+                    **{{ instrument.name }}** (Code: {{ instrument.code }})
+                </li>
+                {% endfor %}
+            </ul>
+
+            <p class="back-link">
+                <a href="/">Go Back to Main Page</a>
+            </p>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Your App Name</p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='apps.js') }}"></script>
+</body>
 </html>
