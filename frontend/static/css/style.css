@@ -6,12 +6,13 @@ body {
     background-color: #1A1A1A; /* Dark Charcoal Background */
     color: #F0F0F0; /* Off-White Text for contrast */
     display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    flex-direction: column;
+    min-height: 80vh;
 }
+
 html, body {
-  height: 100%;
-  margin: 0;
+    height: 100%;
+    margin: 0;
 }
 
 .header-text-custom {
@@ -22,10 +23,18 @@ html, body {
     padding: 0.5rem;
 
 
+}
+.subheader-text-custom {
+    font-size: 3rem;
+
+ margin-bottom: 40px;
+
+    padding: 1rem;
+
 
 }
 #main-content {
-  flex: 1;
+    flex: 1;
 }
 
 h1, h2, h3, h4 {
@@ -34,9 +43,96 @@ h1, h2, h3, h4 {
     color: #A6B0E5; /* NEW Gray-Blue Accent Color: #A6B0E5 */
     letter-spacing: 2px;
     font-weight: 600;
+
 }
 
 
+.text-small {
+    font-size: 1.6rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.instrument-options-form-bg, .melody-options-form-bg, .noise-reduction-form-bg, .vocal-options-form-bg, .meldoy-maker-form-bg {
+    position: relative;
+    background-color: #111; /* Fallback color */
+    overflow: hidden; /* Ensure image doesn't bleed out of rounded corners/borders */
+    z-index: 1; /* Keep the form above the main page background */
+   
+    padding: 20rem 4rem;
+
+}
+
+.meldoy-maker-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/melody_maker.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
+ .vocal-options-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/vocal_options.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
+.instrument-options-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/instrument_options.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
+.noise-reduction-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/noise_reduce.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
+.melody-options-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/melody_options.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
 
 /* Override Bootstrap Default Colors */
 .btn-primary {
@@ -133,8 +229,8 @@ h1, h2, h3, h4 {
 /* Main App Card Container */
 .app-card {
     background-color: #383838; /* Dark panel background */
-    padding: 4rem;
-    margin: 2rem 20rem;
+    padding: 2rem;
+    margin: 2rem;
     border-radius: 8px;
     border: 1px solid #555;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -179,6 +275,7 @@ h1, h2, h3, h4 {
     padding: 6rem;
     border: 1px solid #555;
     border-radius: 4px;
+    display: contents;
 }
 
 /* Status Panel Styling */
@@ -187,20 +284,25 @@ h1, h2, h3, h4 {
     border: 1px solid #555;
     background-color: #383838;
     border-radius: 4px;
+
 }
+
 .app-status-panel .panel-body {
     padding: 15px;
 }
+
 .status-label {
     font-weight: bold;
     color: #F0F0F0;
     margin-bottom: 5px;
-}
-.status-text {
-    font-size: 22px;
-    margin-top: 0;
+    font-size: 1.8rem;
+
 }
 
+.status-text {
+    font-size: 2rem;
+    margin-top: 0;
+}
 
 
 /* Input and Select Overrides (Ensuring dark styling for form-control) */
@@ -262,6 +364,7 @@ footer a:hover {
     .container {
         padding: 60px 30px;
     }
+
     .form-horizontal .control-label {
         text-align: left;
     }

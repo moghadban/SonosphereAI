@@ -51,12 +51,16 @@ genres = [
 ]
 
 # Define instruments
+# Added 'Full Music' to instruments list
+
 instruments = [
+    'Full Music',
     'Piano', 'Guitar', 'Drums', 'Bass', 'Violin', 'Cello', 'Trumpet', 'Saxophone', 'Flute',
     'Clarinet', 'Harp', 'Xylophone', 'Marimba', 'Vibraphone', 'Percussion', 'Accordion',
     'Banjo', 'Mandolin', 'Ukulele', 'Harmonica', 'Bagpipes', 'Sitar', 'Tabla', 'Oud',
     'Qraqeb', 'Riq', 'Darbuka'
 ]
+
 
 # Define languages
 languages = [

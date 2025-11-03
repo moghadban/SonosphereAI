@@ -1,305 +1,256 @@
-// Main App Component
 const App = () => {
-    // --- Shared State ---
-    const [status, setStatus] = React.useState('Ready to process audio.');
-    const [activeTab, setActiveTab] = React.useState('vocalsToInstrument');
+  // --- Shared State ---
+  const [status, setStatus] = React.useState('Ready to process audio.');
+  // NEW TAB ADDED: 'melodyOptions'
+  const [activeTab, setActiveTab] = React.useState('melodyOptions'); // **Set default to new tab**
 
-    // Dynamic data from Flask
-    const [instruments, setInstruments] = React.useState([]);
-    const [edits, setEdits] = React.useState([]);
-    const [genres, setGenres] = React.useState([]);
-    const [languages, setLanguages] = React.useState([]);
-    const [vocalStyles, setVocalStyles] = React.useState([]);
-    const [artistStyles, setArtistStyles] = React.useState([]);
+  // Dynamic data from Flask
+  const [instruments, setInstruments] = React.useState([]);
+// ... (edits, genres, languages, vocalStyles, artistStyles remain the same) ...
+  const [edits, setEdits] = React.useState([]);
+  const [genres, setGenres] = React.useState([]);
+  const [languages, setLanguages] = React.useState([]);
+  // RESTORED:
+  const [vocalStyles, setVocalStyles] = React.useState([]);
+  const [artistStyles, setArtistStyles] = React.useState([]);
 
-    // Form State
-    const [instrumentOptions, setInstrumentOptions] = React.useState({
-        instrument: '',
-        genre: '',
-        language: '',
-        vocalStyle: '',
-        artistStyle: '',
-    });
 
-    const [noteEditOptions, setNoteEditOptions] = React.useState({
-        note: 'C4',
-        feature: 'pitch_bend',
-        value: 0,
-    });
+  // Form State (Used by various options)
+  const [instrumentOptions, setInstrumentOptions] = React.useState({
+    instrument: '',
+    genre: '',
+    language: '',
+    vocalStyle: '', // RESTORED for InstrumentOptions
+    artistStyle: '', // RESTORED for InstrumentOptions
+    lyrics: '',
+    voiceUploadFile: null // Shared state for file object (used by VocalOptions/MelodyMaker)
+  });
 
-    // --- Fetch dynamic form data on mount ---
+  // NEW STATE: For Melody to Lyrics feature
+  const [melodyToLyricsOptions, setMelodyToLyricsOptions] = React.useState({
+      musicUploadFile: null,
+      theme: '',
+      language: '',
+      rhymeScheme: '',
+      lyricLength: '',
+  });
+
     React.useEffect(() => {
-        fetch('/api/form_data')
-            .then(res => res.json())
-            .then(data => {
-                setInstruments(data.instruments || []);
-                setEdits(data.edits || []);
-                setGenres(data.genres || []);
-                setLanguages(data.languages || []);
-                setVocalStyles(data.vocal_styles || []);
-                setArtistStyles(data.artist_styles || []);
+    fetch('/api/form_data')
+// ... (rest of useEffect remains the same) ...
+      .then(res => res.json())
+      .then(data => {
+        setInstruments(data.instruments || []);
+        setEdits(data.edits || []);
+        setGenres(data.genres || []);
+        setLanguages(data.languages || []);
+        setVocalStyles(data.vocal_styles || []); // RESTORED
+        setArtistStyles(data.artist_styles || []); // RESTORED
 
-                // Initialize defaults without optional chaining
-                setInstrumentOptions({
-                    instrument: (data.instruments && data.instruments[0] && data.instruments[0].code) || '',
-                    genre: (data.genres && data.genres[0]) || '',
-                    language: (data.languages && data.languages[0]) || '',
-                    vocalStyle: (data.vocal_styles && data.vocal_styles[0]) || '',
-                    artistStyle: (data.artist_styles && data.artist_styles[0]) || '',
-                });
-            })
-            .catch(err => console.error('Failed to fetch form data:', err));
-    }, []);
+        // Initialize defaults
+        const defaultGenre = (data.genres && data.genres[0]) || '';
+        const defaultLang = (data.languages && data.languages[0]) || '';
 
-    // --- Handlers ---
-    const handleFileUpload = (endpoint) => async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        setStatus('Processing request...');
+        setInstrumentOptions(prev => ({
+          ...prev,
+          instrument: (data.instruments && data.instruments[0] && data.instruments[0].code) || '',
+          genre: defaultGenre,
+          language: defaultLang,
+          vocalStyle: (data.vocal_styles && data.vocal_styles[0]) || '', // RESTORED
+          artistStyle: (data.artist_styles && data.artist_styles[0]) || '', // RESTORED
+        }));
 
-        try {
-            const response = await fetch(`/${endpoint}`, {
-                method: 'POST',
-                body: formData,
-            });
-            const data = await response.json();
-            setStatus(data.status === 'success' ? data.message : `Error: ${data.message}`);
-        } catch (error) {
-            setStatus('Network Error: Could not connect to backend.');
-            console.error('Fetch error:', error);
-        }
-    };
+        // Initialize MelodyToLyrics defaults
+        setMelodyToLyricsOptions(prev => ({
+            ...prev,
+            theme: defaultGenre,
+            language: defaultLang,
+            rhymeScheme: 'AABB', // Mock default
+            lyricLength: 'Medium (8-16 lines)', // Mock default
+        }));
 
-    const handleInstrumentOptions = async (event) => {
-        event.preventDefault();
-        setStatus('Processing instrument options...');
-        try {
-            const res = await fetch('/generate_vocals', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(instrumentOptions),
-            });
-            const data = await res.json();
-            setStatus(data.status === 'success' ? (data.generation_result && data.generation_result.status ? data.generation_result.status : 'Success') : `Error: ${data.message}`);
-        } catch (err) {
-            setStatus('Network Error: Could not connect to backend.');
-            console.error(err);
-        }
-    };
+      })
+      .catch(err => console.error('Failed to fetch form data:', err));
+  }, []);
 
-    const handleNoteEdit = async (event) => {
-        event.preventDefault();
-        setStatus('Processing note edit...');
-        try {
-            const res = await fetch('/note_editing', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(noteEditOptions),
-            });
-            const data = await res.json();
-            setStatus(data.status === 'success' ? data.message : `Error: ${data.message}`);
-        } catch (err) {
-            setStatus('Network Error: Could not connect to backend.');
-            console.error(err);
-        }
-    };
+  // --- Handlers ---
+const [noteEditOptions, setNoteEditOptions] = React.useState({ note: '', feature: '', value: 0 })
 
-    // --- Tab Components ---
-    const VocalsToInstrument = () => (
-        <form onSubmit={handleFileUpload('vocals_to_instrument')} className="form-horizontal">
-            <h2 className="text-center">Vocals to Instrument Conversion</h2>
-            <div className="form-group">
-                <label htmlFor="vocal_file" className="col-sm-4 control-label">Upload Vocal Track (WAV/MP3)</label>
-                <div className="col-sm-8">
-                    <input type="file" name="vocal_file" id="vocal_file" accept=".wav,.mp3" required className="form-control file-input" />
-                </div>
-            </div>
-            <div className="form-group">
-                <label htmlFor="instrument" className="col-sm-4 control-label">Target Instrument</label>
-                <div className="col-sm-8">
-                    <select name="instrument" id="instrument" required className="form-control">
-                        {instruments.map(inst => (
-                            <option key={inst.code} value={inst.code}>{inst.name}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <div className="col-sm-8 col-sm-offset-4">
-                    <button type="submit" className="btn btn-primary">Convert Vocals</button>
-                </div>
-            </div>
-        </form>
-    );
+// ... (handleNoteEdit remains the same) ...
+const handleNoteEdit = async (event) => {
+  event.preventDefault();
+  try {
+    const res = await fetch('/note_editing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(noteEditOptions)
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      setStatus(`Note edited successfully: ${JSON.stringify(data.new_note_state)}`);
+    } else {
+      setStatus(`Error: ${data.message}`);
+    }
+  } catch (err) {
+    setStatus('Network Error: Could not connect to backend.');
+    console.error(err);
+  }
+};
+  const handleGenerateMusic = async (event) => {
+    event.preventDefault();
+    setStatus('Generating music...');
 
-    const InstrumentOptionsForm = () => (
-        <form onSubmit={handleInstrumentOptions} className="form-horizontal">
-            <h2 className="text-center">Advanced Instrument Generation Options</h2>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Instrument</label>
-                <div className="col-sm-8">
-                    <select
-                        className="form-control"
-                        value={instrumentOptions.instrument}
-                        onChange={(e) => setInstrumentOptions({...instrumentOptions, instrument: e.target.value})}
-                    >
-                        {instruments.map(inst => (
-                            <option key={inst.code} value={inst.code}>{inst.name}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Genre</label>
-                <div className="col-sm-8">
-                    <select
-                        className="form-control"
-                        value={instrumentOptions.genre}
-                        onChange={(e) => setInstrumentOptions({...instrumentOptions, genre: e.target.value})}
-                    >
-                        {genres.map(g => (
-                            <option key={g} value={g}>{g}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Language</label>
-                <div className="col-sm-8">
-                    <select
-                        className="form-control"
-                        value={instrumentOptions.language}
-                        onChange={(e) => setInstrumentOptions({...instrumentOptions, language: e.target.value})}
-                    >
-                        {languages.map(l => (
-                            <option key={l} value={l}>{l}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Vocal Style</label>
-                <div className="col-sm-8">
-                    <select
-                        className="form-control"
-                        value={instrumentOptions.vocalStyle}
-                        onChange={(e) => setInstrumentOptions({...instrumentOptions, vocalStyle: e.target.value})}
-                    >
-                        {vocalStyles.map(v => (
-                            <option key={v} value={v}>{v}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Artist Style</label>
-                <div className="col-sm-8">
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={instrumentOptions.artistStyle}
-                        onChange={(e) => setInstrumentOptions({...instrumentOptions, artistStyle: e.target.value})}
-                    />
-                </div>
-            </div>
-            <div className="form-group">
-                <div className="col-sm-8 col-sm-offset-4">
-                    <button type="submit" className="btn btn-primary">Update Options</button>
-                </div>
-            </div>
-        </form>
-    );
+    try {
+      const formData = new FormData();
+// ... (FormData append logic remains the same) ...
+      formData.append('instrument', instrumentOptions.instrument);
+      formData.append('genre', instrumentOptions.genre);
+      formData.append('language', instrumentOptions.language);
 
-    const NoteEditing = () => (
-        <form onSubmit={handleNoteEdit} className="form-horizontal">
-            <h2 className="text-center">MIDI-like Note Property Editing</h2>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Note ID/Name</label>
-                <div className="col-sm-8">
-                    <input type="text" className="form-control" value={noteEditOptions.note} onChange={e => setNoteEditOptions({...noteEditOptions, note: e.target.value})} />
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Feature</label>
-                <div className="col-sm-8">
-                    <select className="form-control" value={noteEditOptions.feature} onChange={e => setNoteEditOptions({...noteEditOptions, feature: e.target.value})}>
-                        {edits.map(edit => (
-                            <option key={edit.code} value={edit.code}>{edit.name}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Value</label>
-                <div className="col-sm-8">
-                    <input type="number" step="any" className="form-control" value={noteEditOptions.value} onChange={e => setNoteEditOptions({...noteEditOptions, value: e.target.value})} />
-                </div>
-            </div>
-            <div className="form-group">
-                <div className="col-sm-8 col-sm-offset-4">
-                    <button type="submit" className="btn btn-primary">Apply Edit</button>
-                </div>
-            </div>
-        </form>
-    );
+      // Determine what to send based on which tab submitted the form
+      if (activeTab === 'instrumentOptions') {
+          // Send all style and lyric options for the original feature
+          formData.append('vocal_style', instrumentOptions.vocalStyle);
+          formData.append('artist_style', instrumentOptions.artistStyle);
+          formData.append('lyrics', instrumentOptions.lyrics);
+      } else if (activeTab === 'vocalOptions' || activeTab === 'vocalsToInstrument') { // Include VocalToInstrument/MelodyMaker
+          // Send only the required options + file upload/lyrics for the new feature
+          if (instrumentOptions.voiceUploadFile) {
+              formData.append('voice_upload', instrumentOptions.voiceUploadFile);
+              // Clear lyrics if file is uploaded
+              formData.append('lyrics', '');
+          } else {
+              formData.append('lyrics', instrumentOptions.lyrics);
+          }
+      }
+      // Note: MelodyOptions uses its own handler, so we don't worry about it here.
 
-    const NoiseReduction = () => (
-        <form onSubmit={handleFileUpload('noise_reduction')} className="form-horizontal">
-            <h2 className="text-center">Noise Reduction (Spectral Masking)</h2>
-            <div className="form-group">
-                <label className="col-sm-4 control-label">Upload Audio File (WAV/MP3)</label>
-                <div className="col-sm-8">
-                    <input type="file" name="audio_file" accept=".wav,.mp3" required className="form-control file-input" />
-                </div>
-            </div>
-            <div className="form-group">
-                <div className="col-sm-8 col-sm-offset-4">
-                    <button type="submit" className="btn btn-primary">Reduce Noise</button>
-                </div>
-            </div>
-        </form>
-    );
+      const res = await fetch('/generate_vocals', {
+        method: 'POST',
+        body: formData
+      });
 
-    // --- Main Render ---
-    return (
-        <div className="container-fluid app-card">
-            <h1 className="text-center header-text-custom">Audio Toolkit</h1>
-            <ul className="nav nav-tabs nav-justified app-nav-tabs">
-                <li className={activeTab==='vocalsToInstrument'?'active':''}>
-                    <a href="#" onClick={e=>{e.preventDefault(); setActiveTab('vocalsToInstrument')}}>Vocals to Instrument</a>
-                </li>
-                <li className={activeTab==='instrumentOptions'?'active':''}>
-                    <a href="#" onClick={e=>{e.preventDefault(); setActiveTab('instrumentOptions')}}>Instrument Options</a>
-                </li>
-                <li className={activeTab==='noteEditing'?'active':''}>
-                    <a href="#" onClick={e=>{e.preventDefault(); setActiveTab('noteEditing')}}>Note Editing</a>
-                </li>
-                <li className={activeTab==='noiseReduction'?'active':''}>
-                    <a href="#" onClick={e=>{e.preventDefault(); setActiveTab('noiseReduction')}}>Noise Reduction</a>
-                </li>
-            </ul>
-            <div className="tab-content app-tab-content justify-content-center">
-                {activeTab==='vocalsToInstrument' && <VocalsToInstrument />}
-                {activeTab==='instrumentOptions' && <InstrumentOptionsForm />}
-                {activeTab==='noteEditing' && <NoteEditing />}
-                {activeTab==='noiseReduction' && <NoiseReduction />}
-            </div>
-            <div className="panel panel-default app-status-panel">
-                <div className="panel-body">
-                    <p className="status-label">Status:</p>
-                    <p className={`status-text ${status.includes('Error')?'text-danger':'text-success'}`}>{status}</p>
-                </div>
-            </div>
+      const data = await res.json();
+      if (data.status === 'success') {
+        setStatus(`Generation complete: ${data.generation_result.status}`);
+      } else {
+        setStatus(`Error: ${data.message}`);
+      }
+    } catch (err) {
+      setStatus('Network Error: Could not connect to backend.');
+      console.error(err);
+    }
+  };
+
+  // NEW HANDLER: For Melody to Lyrics feature
+  const handleGenerateLyrics = async (event) => {
+      event.preventDefault();
+      setStatus('Analyzing melody and generating lyrics...');
+
+      try {
+          const formData = new FormData();
+          formData.append('music_upload', melodyToLyricsOptions.musicUploadFile);
+          formData.append('theme', melodyToLyricsOptions.theme);
+          formData.append('language', melodyToLyricsOptions.language);
+          formData.append('rhyme_scheme', melodyToLyricsOptions.rhymeScheme);
+          formData.append('lyric_length', melodyToLyricsOptions.lyricLength);
+
+          const res = await fetch('/generate_lyrics', { // NEW BACKEND ROUTE
+              method: 'POST',
+              body: formData
+          });
+
+          const data = await res.json();
+          if (data.status === 'success') {
+              setStatus(`Lyrics generated successfully: ${data.generation_result.status}`);
+          } else {
+              setStatus(`Error: ${data.message}`);
+          }
+      } catch (err) {
+          setStatus('Network Error: Could not connect to backend.');
+          console.error(err);
+      }
+  };
+
+
+  // --- Map activeTab to window feature component ---
+  const TabComponents = {
+    melodyOptions: window.MelodyOptions,
+    vocalsToInstrument: window.VocalToInstrument,
+    instrumentOptions: window.InstrumentOptions,
+    vocalOptions: window.VocalOptions,
+    noteEditing: window.NoteEditing,
+    noiseReduction: window.NoiseReduction,
+  };
+  const ActiveTabComponent = TabComponents[activeTab];
+
+  // --- Main Render ---
+  return (
+    <div className="container-fluid app-card">
+      <h1 className="text-center header-text-custom">Audio Toolkit</h1>
+      <ul className="nav nav-tabs nav-justified app-nav-tabs">
+          <li className={activeTab === 'melodyOptions' ? 'active' : ''}>
+              <a href="#" onClick={e => { e.preventDefault(); setActiveTab('melodyOptions'); }}>Melody to Lyrics<p className="text-small">Melody Options</p></a>
+          </li>
+          <li className={activeTab === 'instrumentOptions' ? 'active' : ''}>
+            <a href="#" onClick={e => { e.preventDefault(); setActiveTab('instrumentOptions'); }}>Lyrics to Melody<p className="text-small">Instrument Options</p></a>
+        </li>
+        <li className={activeTab === 'vocalOptions' ? 'active' : ''}>
+            <a href="#" onClick={e => { e.preventDefault(); setActiveTab('vocalOptions'); }}>Lyrics to Melody<p className="text-small">Vocal Options</p></a>
+        </li>
+        <li className={activeTab === 'vocalsToInstrument' ? 'active' : ''}>
+          <a href="#" onClick={e => { e.preventDefault(); setActiveTab('vocalsToInstrument'); }}>Melody Maker<p className="text-small">Vocal to MIDI</p></a>
+        </li>
+          <li className={activeTab === 'noiseReduction' ? 'active' : ''}>
+          <a href="#" onClick={e => { e.preventDefault(); setActiveTab('noiseReduction'); }}>Noise Reduction<p className="text-small">Spectral Masking</p></a>
+        </li>
+
+        {/* END NEW TAB */}
+        {/*<li className={activeTab === 'noteEditing' ? 'active' : ''}>*/}
+        {/* <a href="#" onClick={e => { e.preventDefault(); setActiveTab('noteEditing'); }}>Note Editing</a>*/}
+        {/*</li>*/}
+
+      </ul>
+
+      <div className="tab-content app-tab-content justify-content-center">
+        {ActiveTabComponent && (
+          <ActiveTabComponent
+              instruments={instruments}
+              edits={edits}
+              genres={genres}
+              languages={languages}
+              vocalStyles={vocalStyles}
+              artistStyles={artistStyles}
+              instrumentOptions={instrumentOptions}
+              setInstrumentOptions={setInstrumentOptions}
+              handleGenerateMusic={handleGenerateMusic}
+              handleGenerateLyrics={() => handleGenerateLyrics(event)}
+              melodyToLyricsOptions={melodyToLyricsOptions}
+              setMelodyToLyricsOptions={setMelodyToLyricsOptions}
+              noteEditOptions={noteEditOptions}
+              setNoteEditOptions={setNoteEditOptions}
+              handleNoteEdit={handleNoteEdit}
+            />
+        )}
+      </div>
+      <div className="panel panel-default app-status-panel">
+        <div className="panel-body">
+          <p className="status-label">Status:</p>
+          <p className={`status-text ${status.includes('Error') ? 'text-danger' : 'text-success'}`}>
+            {status}
+          </p>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 // --- Mount React App ---
 const rootElement = document.getElementById('root');
 if (rootElement) {
-    ReactDOM.createRoot(rootElement).render(
-        React.createElement(React.StrictMode, null, React.createElement(App))
-    );
+  ReactDOM.createRoot(rootElement).render(
+    React.createElement(React.StrictMode, null, React.createElement(App))
+  );
 } else {
-    console.error("Root element 'root' not found.");
+  console.error("Root element 'root' not found.");
 }

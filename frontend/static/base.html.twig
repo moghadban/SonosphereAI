@@ -26,13 +26,19 @@
     </div>
 </nav>
 <div id="main-content"> {% block content %}{% endblock %} </div>
-
 {% block body_scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+     <script type="text/babel" src="{{ url_for('static', filename='features/instrumentOptions.jsx') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='features/VocalOptions.jsx') }}"></script>
+{#     <script type="text/babel" src="{{ url_for('static', filename='features/NoteEditing.jsx') }}"></script>#}
+     <script type="text/babel" src="{{ url_for('static', filename='features/NoiseReduction.jsx') }}"></script>
+     <script type="text/babel" src="{{ url_for('static', filename='features/VocalToInstrument.jsx') }}"></script>
+     <script type="text/babel" src="{{ url_for('static', filename='features/MelodyOptions.jsx') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='App.jsx') }}"></script>
  {% endblock %}
 

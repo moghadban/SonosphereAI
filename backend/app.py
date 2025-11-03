@@ -3,27 +3,26 @@ import librosa
 import numpy as np
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+from gtts import gTTS
+import os
 
-# -------------------------
-# App Setup
-# -------------------------
 app = Flask(
     __name__,
-    template_folder='../frontend/templates',
+    template_folder='../frontend/static',
     static_folder='../frontend/static'
 )
 CORS(app)
 
-# Ensure temp and output directories exist
 TMP_DIR = '/tmp'
 OUTPUT_DIR = os.path.join('../frontend/static', 'outputs')
 os.makedirs(TMP_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # -------------------------
-# Core Data Structures
+# Core Data Structures - RESTORED VOCAL AND ARTIST STYLES
 # -------------------------
 INSTRUMENTS = [
+    {"code": "full_music", "name": "Full Music"},
     {"code": "piano", "name": "Piano"},
     {"code": "guitar", "name": "Guitar"},
     {"code": "violin", "name": "Violin"},
@@ -41,67 +40,52 @@ EDITS = [
     {"code": "note_end_time", "name": "Set End Time (Value)"},
 ]
 
-GENRES = [
-    'Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic', 'Country',
-    'R&B', 'Metal', 'Reggae', 'Bollywood', 'Latin', 'Ambient'
-]
-
-LANGUAGES = [
-    'English', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Arabic'
-]
-
+GENRES = ['Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic', 'Country',
+          'R&B', 'Metal', 'Reggae', 'Bollywood', 'Latin', 'Ambient']
+LANGUAGES = ['English', 'Spanish', 'French', 'German', 'Japanese', 'Korean', 'Arabic']
 VOCAL_STYLES = ['Male', 'Female', 'Boy', 'Girl', 'Choir']
-ARTIST_STYLES = [
-    'Ariana Grande', 'Beyoncé', 'Taylor Swift', 'Justin Bieber', 'Dua Lipa', 'The Beatles'
-]
+ARTIST_STYLES = ['Ariana Grande', 'Beyoncé', 'Taylor Swift', 'Justin Bieber', 'Dua Lipa', 'The Beatles']  # RESTORED
 
-# -------------------------
-# Helper Functions
-# -------------------------
 
 def save_temp_file(uploaded_file):
-    path = os.path.join(TMP_DIR, uploaded_file.filename)
+    # Use a more unique file name
+    filename = f"{os.urandom(8).hex()}_{uploaded_file.filename}"
+    path = os.path.join(TMP_DIR, filename)
     uploaded_file.save(path)
     return path
 
+
 def save_output_audio(y, sr, filename):
     path = os.path.join(OUTPUT_DIR, filename)
-    librosa.output.write_wav(path, y, sr)
+    # Placeholder for audio saving
     return path
 
-# --- Vocals to Instrument ---
+
 def convert_vocals_to_instrument(vocals_path, instrument):
     try:
         y, sr = librosa.load(vocals_path)
         y_harmonic, y_percussive = librosa.effects.hpss(y)
-
-        pitch_map = {
-            'piano': 2, 'guitar': 4, 'violin': 6, 'bass': -2, 'flute': 8, 'bell': 10
-        }
+        pitch_map = {'piano': 2, 'guitar': 4, 'violin': 6, 'bass': -2, 'flute': 8, 'bell': 10}
 
         if instrument == 'drums':
             y_out = y_percussive
-        elif instrument in pitch_map:
-            y_out = librosa.effects.pitch_shift(y_harmonic, sr=sr, n_steps=pitch_map[instrument])
+        elif instrument == 'full_music':
+            # Full Music: Auto-generate balanced harmonic + percussive track
+            y_out = y_harmonic + 0.5 * y_percussive
         else:
-            raise ValueError("Invalid instrument")
-
+            y_out = librosa.effects.pitch_shift(y_harmonic, sr=sr, n_steps=pitch_map.get(instrument, 0))
         return y_out, sr
     except Exception as e:
         print(f"Error converting vocals: {e}")
         return np.array([]), None
 
-# --- MIDI-like Note Editing ---
+
 def edit_note_properties(note_data, feature, value):
-    mock_note = {
-        'id': note_data,
-        'pitch': 60, 'volume': 100, 'duration': 1.0, 'start_time': 0.0, 'end_time': 1.0
-    }
+    mock_note = {'id': note_data, 'pitch': 60, 'volume': 100, 'duration': 1.0, 'start_time': 0.0, 'end_time': 1.0}
     try:
         value = float(value)
     except ValueError:
         return None, "Value must be numeric"
-
     if feature == 'pitch_bend':
         mock_note['pitch'] += value
     elif feature == 'volume_adjust':
@@ -114,129 +98,155 @@ def edit_note_properties(note_data, feature, value):
         mock_note['end_time'] = value
     else:
         return None, 'Invalid feature'
-
     return mock_note, "Success"
 
-# --- Noise Reduction ---
-def reduce_noise(audio_path):
-    try:
-        y, sr = librosa.load(audio_path)
-        S_full, phase = librosa.magphase(librosa.stft(y))
-        S_mask = librosa.util.softmask(S_full, margin=4, power=1)
-        S_reduced = S_full * S_mask
-        y_out = librosa.istft(S_reduced * phase)
-        return y_out, sr
-    except Exception as e:
-        print(f"Error reducing noise: {e}")
-        return np.array([]), None
-
-# --- AI Vocal Generation Stub ---
-def generate_vocals(instrument, genre, language, vocal_style, artist_style, text_input, voice_upload):
-    source = "Text Input" if text_input else "Voice Upload"
-    print(f"Mock vocal generation using {source}")
-    return {'instrument': instrument, 'genre': genre, 'status': 'Processing complete'}
 
 # -------------------------
 # Routes
 # -------------------------
-
 @app.route('/')
 def index():
-    return render_template(
-        'index.html',
-        instruments=INSTRUMENTS,
-        edits=EDITS,
-        genres=GENRES,
-        languages=LANGUAGES,
-        vocal_styles=VOCAL_STYLES,
-        artist_styles=ARTIST_STYLES
-    )
+    return render_template('index.html')
 
-@app.route('/generate_vocals', methods=['POST'])
-def generate_vocals_route():
-    instrument = request.form.get('instrument')
-    genre = request.form.get('genre')
-    language = request.form.get('language')
-    vocal_style = request.form.get('vocal_style')
-    artist_style = request.form.get('artist_style')
-    text_input = request.form.get('text_input')
-    voice_upload = request.files.get('voice_upload')
 
-    if not any([text_input, voice_upload]):
-        return jsonify({"status": "error", "message": "Provide text or voice file."}), 400
-
-    result = generate_vocals(instrument, genre, language, vocal_style, artist_style, text_input, voice_upload)
-    return jsonify({"status": "success", "generation_result": result})
-
-@app.route('/note_editing', methods=['POST'])
-def note_editing_route():
-    note_name = request.form.get('note')
-    feature = request.form.get('feature')
-    value = request.form.get('value')
-
-    if not all([note_name, feature, value]):
-        return jsonify({"status": "error", "message": "Missing note, feature, or value."}), 400
-
-    edited_note, status = edit_note_properties(note_name, feature, value)
-    if status == "Success":
-        return jsonify({
-            "status": "success",
-            "message": f"Note '{note_name}' edited",
-            "new_note_state": edited_note
-        })
-    return jsonify({"status": "error", "message": f"Editing failed: {status}"}), 400
-
-@app.route('/vocals_to_instrument', methods=['POST'])
-def vocals_to_instrument_route():
-    vocal_file = request.files.get('vocal_file')
-    instrument = request.form.get('instrument')
-
-    if not vocal_file or not instrument:
-        return jsonify({"status": "error", "message": "Missing file or instrument."}), 400
-
-    temp_path = save_temp_file(vocal_file)
-    try:
-        y_out, sr = convert_vocals_to_instrument(temp_path, instrument)
-        if y_out.size > 0:
-            filename = f"{os.path.splitext(vocal_file.filename)[0]}_{instrument}.wav"
-            output_path = save_output_audio(y_out, sr, filename)
-            return jsonify({"status": "success", "message": f"Converted to {instrument}.", "file": f"/static/outputs/{filename}"})
-        else:
-            return jsonify({"status": "error", "message": "Audio processing failed."}), 500
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
-@app.route('/noise_reduction', methods=['POST'])
-def noise_reduction_route():
-    audio_file = request.files.get('audio_file')
-    if not audio_file:
-        return jsonify({"status": "error", "message": "No audio file uploaded."}), 400
-
-    temp_path = save_temp_file(audio_file)
-    try:
-        y_out, sr = reduce_noise(temp_path)
-        if y_out.size > 0:
-            filename = f"{os.path.splitext(audio_file.filename)[0]}_noise_reduced.wav"
-            output_path = save_output_audio(y_out, sr, filename)
-            return jsonify({"status": "success", "message": "Noise reduction complete.", "file": f"/static/outputs/{filename}"})
-        else:
-            return jsonify({"status": "error", "message": "Noise reduction failed."}), 500
-    finally:
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
 @app.route('/api/form_data')
 def get_form_data():
+    """Returns all data, including restored styles."""
     return jsonify({
         "instruments": INSTRUMENTS,
         "edits": EDITS,
         "genres": GENRES,
         "languages": LANGUAGES,
-        "vocal_styles": VOCAL_STYLES,
-        "artist_styles": ARTIST_STYLES
+        "vocal_styles": VOCAL_STYLES,  # RESTORED
+        "artist_styles": ARTIST_STYLES  # RESTORED
     })
-# -------------------------
-# Run
-# -------------------------
+
+
+@app.route('/generate_vocals', methods=['POST'])
+def generate_vocals_route():
+    try:
+        # Collect parameters from the unified form submission
+        instrument = request.form.get('instrument')
+        genre = request.form.get('genre')
+        language = request.form.get('language')
+
+        # Style options (sent by the original 'Instrument Options' tab)
+        vocal_style = request.form.get('vocal_style')
+        artist_style = request.form.get('artist_style')
+
+        # Content options (sent by EITHER tab)
+        lyrics = request.form.get('lyrics')
+        voice_upload = request.files.get('voice_upload')
+
+        # Determine the source and proceed with mock processing
+        if voice_upload:
+            saved_path = save_temp_file(voice_upload)
+            print(f"Mock AI processing uploaded vocal at: {saved_path} with: {instrument}, {genre}, {language}")
+
+            return jsonify({
+                "status": "success",
+                "generation_result": {
+                    "status": f"Uploaded vocal processed for {instrument} track and melody generation.",
+                    "file_name": os.path.basename(saved_path)}
+            })
+
+        elif lyrics:
+            try:
+                # Handle Text-to-Speech (Lyrics)
+                lang_code = language.lower()[:2] if language else 'en'
+                tts = gTTS(text=lyrics, lang=lang_code)
+                output_path = os.path.join(OUTPUT_DIR, "generated_vocals_tts.mp3")
+                tts.save(output_path)
+
+                # Report styles only if they were part of the request (i.e., from the Instrument Options tab)
+                style_info = f" (Styles: {vocal_style}, {artist_style})" if vocal_style or artist_style else ""
+                print(
+                    f"Mock AI generating melody for lyrics: '{lyrics}' with: {instrument}, {genre}, {language}{style_info}")
+
+                return jsonify({
+                    "status": "success",
+                    "generation_result": {
+                        "status": f"Lyrics converted to speech and melody generated for {instrument}{style_info}",
+                        "file": os.path.basename(output_path)}
+                })
+            except Exception as e:
+                return jsonify({"status": "error", "message": f"TTS generation failed: {e}"}), 500
+
+        else:
+            # Instrumental Only (no vocals/lyrics/upload)
+            return jsonify({
+                "status": "success",
+                "generation_result": {"status": f"Instrumental track generation complete for {instrument}"}
+            })
+
+    except Exception as e:
+        print(f"Error in /generate_vocals: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route('/get_notes', methods=['GET'])
+def get_notes():
+    """Return a list of all possible notes (C0–B8)."""
+    notes = []
+    for octave in range(0, 9):  # 0–8
+        for n in ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']:
+            notes.append(f"{n}{octave}")
+    return jsonify({'notes': notes})
+
+
+@app.route('/note_editing', methods=['POST'])
+def note_editing_route():
+    data = request.get_json()
+    note_name = data.get('note')
+    feature = data.get('feature')
+    value = data.get('value')
+    if not all([note_name, feature, value]):
+        return jsonify({"status": "error", "message": "Missing note, feature, or value."}), 400
+    edited_note, status = edit_note_properties(note_name, feature, value)
+    if status == "Success":
+        return jsonify({"status": "success", "message": f"Note '{note_name}' edited", "new_note_state": edited_note})
+    return jsonify({"status": "error", "message": f"Editing failed: {status}"}), 400
+
+@app.route('/generate_lyrics', methods=['POST'])
+def generate_lyrics_route():
+    try:
+        music_upload = request.files.get('music_upload')
+        theme = request.form.get('theme')
+        language = request.form.get('language')
+        rhyme_scheme = request.form.get('rhyme_scheme')
+        lyric_length = request.form.get('lyric_length')
+
+        if not music_upload:
+            return jsonify({"status": "error", "message": "No music file uploaded."}), 400
+
+        # Save the uploaded file (mock processing)
+        saved_path = save_temp_file(music_upload)
+
+        # Mock AI processing based on melody parameters
+        mock_lyrics = f"""
+        (Mock Lyrics Generated)
+        The rhythm of the music flows,
+        A story that the melody knows.
+        In {language}, a {theme} refrain,
+        Following the {rhyme_scheme} chain.
+        This is a mock generation for a {lyric_length} output.
+        """
+
+        print(f"Mock AI generated lyrics for music at: {saved_path}. Lyrics: {mock_lyrics}")
+
+        return jsonify({
+            "status": "success",
+            "generation_result": {
+                "status": f"Lyrics generated successfully for music file. Theme: {theme}",
+                "lyrics": mock_lyrics,
+                "file_name": os.path.basename(saved_path)
+            }
+        })
+
+    except Exception as e:
+        print(f"Error in /generate_lyrics: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+# Run server
 if __name__ == '__main__':
     app.run(debug=True)
+
