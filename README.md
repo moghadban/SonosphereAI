@@ -5,29 +5,52 @@
 
 ---
 
-## Features
+## ✨ Features
 
-SonosphereAI's Audio Toolkit provides four core functionalities:
+SonosphereAI's Audio Toolkit is a **five-in-one** suite of tools, accessible via a seamless tab interface, to cover all your audio manipulation needs:
 
-### 🎤 Vocals to Instrument Conversion
-This feature allows you to upload a vocal track and convert its melody into an instrumental performance. You can select the **Target Instrument** (e.g., Piano) for the conversion.
+---
 
-![Vocals to Instrument Conversion](frontend/static/images/vocals_to_instr.png)
+### 🎶 Melody to Lyrics
+**Melody to Lyrics** | *AI-Powered Lyric Generation*
+![Melody to Lyrics](frontend/static/images/melody_options.png)
+This **new feature** allows you to upload an existing musical track (instrumental or with vocals). Our AI will analyze the melody and harmonic structure to generate original, matching lyrics based on your preferences. You can customize the **Lyric Style/Mood** (e.g., Pop), **Rhyme Scheme** (e.g., AABB), **Lyric Length** (e.g., Medium (5-10 lines)), and **Language** (e.g., English).
 
-### 🎹 Advanced Instrument Options
-This section offers fine-grained control over instrument generation. You can specify the **Instrument**, music **Genre**, **Language**, **Vocal Style** (Male/Female), and even an **Artist Style** (e.g., Ariana Grande) to influence the AI's output.
 
-![Advanced Instrument Generation Options](frontend/static/images/instr_opt.png)
 
-### 🎼 MIDI-like Note Editing
-For precise control, you can edit the properties of specific notes. This includes modifying a **Note ID/Name** (e.g., C4) and adjusting a **Feature** like **Pitch Band (Value)** to refine the audio's performance characteristics.
+---
 
-![MIDI-like Note Property Editing](frontend/static/images/note_edit.png)
+### 🎤 Lyrics to Melody (Instrumental)
+**Lyrics to Melody** | *Instrumental Synthesis*
+![Lyrics to Melody (Instrumental)](frontend/static/images/instr_opt.png)
+This tool takes your written lyrics and synthesizes a corresponding melody and instrumental backing track. It essentially reverses the process, allowing your words to inspire the music. This aligns with your original **Vocals to Instrument Conversion** concept.
 
-### 🔇 Noise Reduction (Spectral Masking)
-Easily clean up your audio files. The **Noise Reduction** tool uses a spectral masking technique to minimize unwanted background noise, resulting in clearer and professional-sounding tracks.
 
+
+---
+
+### 🎵 Lyrics to Melody (Vocal)
+**Lyrics to Melody** | *Vocal Synthesis*
+![Lyrics to Melody (Vocal)](frontend/static/images/vocal_options.png)
+This section is dedicated to **vocal synthesis**, which takes your lyrics and generates the corresponding vocal track, complete with realistic pitch and performance characteristics. This aligns with your original **Advanced Instrument Options** and **MIDI-like Note Editing** concepts by focusing on fine-grained control over the generated vocal performance.
+
+
+
+---
+
+### 🎼 Melody Maker
+**Melody Maker** | *Vocals & MIDI*
+![Meldoy Maker](frontend/static/images/melody_maker.png)
+A comprehensive creative hub for constructing music. This combines the ability to input a melody to generate vocals with **MIDI-like note editing** capabilities for precise control over the musical score, including features like adjusting **Pitch Band** values.
+
+
+
+---
+
+### 🔇 Noise Reduction
+**Noise Reduction** | *Spectral Masking*
 ![Noise Reduction (Spectral Masking)](frontend/static/images/noise_reduce.png)
+Easily clean up your audio files. This feature uses advanced **spectral masking** to precisely identify and minimize unwanted background noise, resulting in clearer, professional-sounding tracks with a simple upload.
 
 ---
 
