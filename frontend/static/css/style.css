@@ -1,3 +1,4 @@
+/* ===== style.css (FULL UPDATED FILE) ===== */
 /* --- Base Styling & Theme --- */
 body {
     /* Updated Font Family: Inter for body text */
@@ -19,20 +20,10 @@ html, body {
     font-size: 6rem;
     font-weight: bold;
     margin-bottom: 20px;
-
     padding: 0.5rem;
-
-
 }
-.subheader-text-custom {
-    font-size: 3rem;
-
- margin-bottom: 40px;
-
-    padding: 1rem;
 
 
-}
 #main-content {
     flex: 1;
 }
@@ -43,9 +34,7 @@ h1, h2, h3, h4 {
     color: #A6B0E5; /* NEW Gray-Blue Accent Color: #A6B0E5 */
     letter-spacing: 2px;
     font-weight: 600;
-
 }
-
 
 .text-small {
     font-size: 1.6rem;
@@ -53,17 +42,23 @@ h1, h2, h3, h4 {
     font-style: italic;
 }
 
-.instrument-options-form-bg, .melody-options-form-bg, .noise-reduction-form-bg, .vocal-options-form-bg, .meldoy-maker-form-bg {
+.instrument-options-form-bg, .melody-options-form-bg, .noise-reduction-form-bg,
+.vocal-options-form-bg, .melody-maker-form-bg, .output-options-form-bg {
     position: relative;
     background-color: #111; /* Fallback color */
     overflow: hidden; /* Ensure image doesn't bleed out of rounded corners/borders */
     z-index: 1; /* Keep the form above the main page background */
-   
-    padding: 20rem 4rem;
-
+    padding: 6rem;
 }
 
-.meldoy-maker-form-bg::before {
+.status-bg, .ai-data-flow-sm {
+    position: relative;
+    background-color: #111; /* Fallback color */
+    overflow: hidden; /* Ensure image doesn't bleed out of rounded corners/borders */
+    z-index: 1; /* Keep the form above the main page background */
+}
+
+.melody-maker-form-bg::before {
     content: '';
     position: absolute;
     top: 0;
@@ -75,9 +70,37 @@ h1, h2, h3, h4 {
     background-position: center;
     opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
     z-index: -1; /* Pushes the background behind the form content */
-
 }
- .vocal-options-form-bg::before {
+
+.ai-data-flow-sm::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/instrument_options_sm.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+}
+
+.status-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/loadingslidescroll5.gif');
+    background-size: 100rem;
+    background-position: center;
+    opacity: 0.6; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+}
+
+.vocal-options-form-bg::before {
     content: '';
     position: absolute;
     top: 0;
@@ -91,6 +114,22 @@ h1, h2, h3, h4 {
     z-index: -1; /* Pushes the background behind the form content */
 
 }
+
+.output-options-form-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../static/images/output.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
+    z-index: -1; /* Pushes the background behind the form content */
+
+}
+
 .instrument-options-form-bg::before {
     content: '';
     position: absolute;
@@ -103,8 +142,8 @@ h1, h2, h3, h4 {
     background-position: center;
     opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
     z-index: -1; /* Pushes the background behind the form content */
-
 }
+
 .noise-reduction-form-bg::before {
     content: '';
     position: absolute;
@@ -117,8 +156,8 @@ h1, h2, h3, h4 {
     background-position: center;
     opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
     z-index: -1; /* Pushes the background behind the form content */
-
 }
+
 .melody-options-form-bg::before {
     content: '';
     position: absolute;
@@ -131,7 +170,6 @@ h1, h2, h3, h4 {
     background-position: center;
     opacity: 0.2; /* ADJUST THIS VALUE (0.0 to 1.0) for desired transparency */
     z-index: -1; /* Pushes the background behind the form content */
-
 }
 
 /* Override Bootstrap Default Colors */
@@ -143,9 +181,70 @@ h1, h2, h3, h4 {
     font-size: 3rem;
     font-family: 'Poppins', sans-serif;
     padding: 2rem 6rem;
+    margin-top: 6rem;
+    margin-bottom: 2rem;
 }
 
-.btn-primary:hover, .btn-primary:focus {
+.btn-primary-status {
+    background-color: #A6B0E5;
+    border-color: #A6B0E5;
+    color: #1A1A1A;
+    transition: background-color 0.3s;
+    font-size: 2.2rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem;
+    min-width: 28%;
+}
+
+.btn-primary-tts {
+    background-color: #A6B0E5;
+    border-color: #A6B0E5;
+    color: #1A1A1A;
+    transition: background-color 0.3s;
+    font-size: 2rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem;
+    opacity: 0.9;
+
+}
+
+.btn-primary-tts-engine {
+    background-color: #A6B0E5;
+    border-color: #A6B0E5;
+    color: #1A1A1A;
+    transition: background-color 0.3s;
+    font-size: 2rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem;
+    opacity: 0.9;
+
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary-status:hover, .btn-primary-status:focus {
+    background-color: #BEC5F0; /* Lighter shade for hover */
+    border-color: #BEC5F0;
+    color: #1A1A1A;
+}
+
+label.btn.btn-primary-tts.active {
+    background-color: rgb(57, 65, 113); /* Lighter shade for hover */
+    border-color: #f0f1f3;
+    color: #d9dbe8;
+    font-size: 3rem;
+    font-weight: bold;
+    opacity: 1;
+}
+
+label.btn.btn-primary-tts-engine.active {
+    background-color: rgb(57, 65, 113); /* Lighter shade for hover */
+    border-color: #f0f1f3;
+    color: #d9dbe8;
+    font-size: 3rem;
+    font-weight: bold;
+    opacity: 1;
+}
+
+.btn-primary-tts:hover, .btn-primary-tts:focus, .btn-primary-tts-engine:hover, .btn-primary-tts-engine:focus {
     background-color: #BEC5F0; /* Lighter shade for hover */
     border-color: #BEC5F0;
     color: #1A1A1A;
@@ -208,14 +307,15 @@ h1, h2, h3, h4 {
 /* --- Tool Grid Section --- */
 .section-title {
     margin-top: 0;
-    font-size: 42px;
-    margin-bottom: 5px;
+    font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 .section-subtitle {
-    margin-bottom: 60px;
+    margin-bottom: 2rem;
     font-style: italic;
     color: #888888;
+    font-size: large;
 }
 
 #tool-options-grid {
@@ -282,26 +382,13 @@ h1, h2, h3, h4 {
 .app-status-panel {
     margin-top: 20px;
     border: 1px solid #555;
-    background-color: #383838;
+
     border-radius: 4px;
 
 }
 
 .app-status-panel .panel-body {
     padding: 15px;
-}
-
-.status-label {
-    font-weight: bold;
-    color: #F0F0F0;
-    margin-bottom: 5px;
-    font-size: 1.8rem;
-
-}
-
-.status-text {
-    font-size: 2rem;
-    margin-top: 0;
 }
 
 
@@ -337,12 +424,6 @@ h1, h2, h3, h4 {
     font-size: 2rem;
 }
 
-/* For file inputs specifically, we need to style the inner button/text which is hard in BS3 */
-/* The general .form-control styles above help, but for the "Choose File" button color,
-   we rely on the browser's default behavior, which is why a custom class in Tailwind was
-   needed. In pure BS3, this is complex CSS vendor prefixing, so we primarily ensure the background/text is dark. */
-
-
 /* --- Footer --- */
 footer {
     background-color: #2C2C2C;
@@ -368,4 +449,1011 @@ footer a:hover {
     .form-horizontal .control-label {
         text-align: left;
     }
+}
+
+/* Custom Styles for App.jsx Status Panel */
+.app-status-panel .panel-body {
+    padding: 1rem 10rem;
+    align-items: center;
+    word-break: break-all;
+}
+
+.loader-container {
+    display: block;
+    align-items: center;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .soundwave-loader {
+        height: 60px;
+        gap: 3px;
+    }
+
+    .soundwave-loader .bar {
+        width: 5px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .soundwave-loader {
+        height: 40px;
+        gap: 2px;
+    }
+
+    .soundwave-loader .bar {
+        width: 3px;
+        height: 20px;
+    }
+}
+
+/* Success Alert Styling Overrides */
+.alert-success {
+    background-color: #1c5232;
+    font-family: 'Poppins', sans-serif;
+    color: #ccffdd;
+    border-color: #387c54;
+    padding: 1.8rem 4rem;
+    border-radius: 6px;
+    font-size: 3rem;
+    opacity: 0.8;
+    text-align: center;
+    display: inline-block;
+
+}
+
+.alert-success .bi-check-circle-fill {
+    fill: #4CAF50;
+    margin: 2px 10px;
+    vertical-align: middle;
+}
+
+/* New CSS for disabled elements (optional, but good practice) */
+.instrument-options-form-bg.disabled :is(select, textarea, button) {
+    cursor: not-allowed;
+}
+
+/* --- Audio Player Styling --- */
+.audio-container {
+    background: radial-gradient(
+            circle at center,
+            rgb(158, 169, 230, 0.5) 0%, rgba(58, 62, 83, 0.5) 100%
+    );
+    border: 1px solid rgba(166, 176, 229, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(166, 176, 229, 0.15);
+    padding: 2.5rem;
+    margin: 3rem auto;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.audio-container:hover {
+    box-shadow: 0 0 25px rgba(166, 176, 229, 0.3);
+    transform: translateY(-3px);
+}
+
+/* Header text inside audio box */
+.audio-container p {
+    color: #A6B0E5;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 3rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+/* Audio element styling */
+.audio-container audio {
+    width: 100%;
+    border-radius: 8px;
+    background-color: transparent;
+    outline: none;
+    box-shadow: 0 0 15px rgba(166, 176, 229, 0.25);
+    transition: box-shadow 0.3s ease;
+}
+
+/* When hovering over player */
+.audio-container audio:hover {
+    box-shadow: 0 0 25px rgba(166, 176, 229, 0.4);
+}
+
+
+/* --- Audio Visualizer --- */
+.visualizer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 60px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+}
+
+.visualizer.active {
+    opacity: 1;
+}
+
+.visualizer span {
+    display: inline-flex;
+    width: 3rem;
+    height: 50px;
+    margin: 0 2px;
+    background: #A6B0E5;
+    border-radius: 4px;
+    animation: bounce 1.2s infinite ease-in-out;
+    animation-delay: calc(var(--i) * 0.05s);
+    transform-origin: bottom;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scaleY(0.3);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scaleY(1.4);
+        opacity: 1;
+    }
+}
+
+/* Custom Player Styling (Randy Burden inspired) */
+.custom-audio-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1c1f2b;
+    border-radius: 40px;
+    padding: 3rem;
+    box-shadow: 0 0 15px rgba(166, 176, 229, 0.15);
+    width: 100%;
+    margin: 0 auto 0 auto;
+}
+
+.play-btn {
+    background: #A6B0E5;
+    color: #111;
+    border: none;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+    font-size: 4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+
+.play-btn:hover {
+    background: #8f99dc;
+    transform: scale(1.08);
+}
+
+.progress-container {
+    position: relative;
+    flex: 1;
+    height: 6px;
+    background: #2e3248;
+    border-radius: 5px;
+    margin-left: 15px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #A6B0E5, #6d76cc);
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.1s linear;
+}
+
+/* Circular download button that visually matches play button */
+.circular-download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #A6B0E5, #6d76cc);
+    color: #111;
+    text-decoration: none;
+    margin-left: 12px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border: none;
+    font-size: 3rem;
+}
+
+.circular-download-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32);
+}
+
+/* Icon inside the circular btn */
+.circular-download-btn svg {
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.06));
+    stroke: rgba(17, 17, 17, 0.95);
+}
+
+/* --- CSS for Loader 24 Magnifying Circle Effect --- */
+
+.status-label {
+    font-weight: bold;
+    color: #F0F0F0;
+    margin: 5px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.status-text {
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.7;
+    margin: 20px 5px 10px 5px;
+    /*font-family: 'Poppins', sans-serif;*/
+    word-spacing: 0.5rem;
+    padding: 4rem 2rem;
+}
+
+.pulse-note-char-container {
+    font-size: 4rem;
+    display: inline-flex;
+    position: relative;
+    padding: 0 .9rem;
+    transition: transform 0.4s ease-out;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.pulse-char-text {
+
+    display: block;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.15s ease-out, color 0.15s ease-out, text-shadow 0.15s ease-out;
+    font-size: 3rem;
+    font-weight: bold;
+    word-spacing: 1rem;
+    color: #A6B0E5;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* The actual magnifying circle background */
+.pulse-circle-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    background-color: rgba(58, 62, 83, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    animation: magnify-pulse 0.2s ease-out forwards;
+}
+
+/* The CSS for the note magnification */
+.pulse-note-char-container.is-pulsing {
+    /* Scale up the character (the musical note) */
+    transform: scale(1.4);
+    /* Set the dynamic color */
+    color: var(--note-color, #A6B0E5);
+    text-shadow: 0 0 10px #888ca166, 0 0 5px rgb(18 21 37)
+}
+
+.pulse-char-text {
+    /* Scale up the character (the musical note) */
+    transform: scale(1.6);
+    /* Set the dynamic color */
+    color: var(--note-color, #A6B0E5);
+    text-shadow: 0 0 10px #888ca166, 0 0 5px rgb(18 21 37)
+}
+
+@keyframes magnify-pulse {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.5;
+    }
+    100% {
+        /* Define the size of the magnifying circle */
+        width: 120px; /* Adjust size based on your font size */
+        height: 120px;
+        opacity: 1;
+    }
+}
+
+.word-spacer {
+    /* Set an explicit, generous margin to separate the two words */
+    margin-right: 0.5rem; /* Adjust this value (e.g., 2rem, 3rem) for the desired gap */
+    width: 0; /* Ensures the container for the space itself doesn't take up width */
+    padding: 0; /* Remove padding from the space container */
+    overflow: hidden; /* Hide the actual space character if necessary */
+    /* You might need to add a slight margin-left as well, but margin-right should suffice */
+}
+
+/* ===== Lyrics Generator Styling ===== */
+/* ===== Lyrics Generator — Dark Theme ===== */
+
+.lyrics-generator-form {
+    background: linear-gradient(180deg, #1e1f26 0%, #2b2d36 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 98%;
+    margin: 0 auto;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    color: #e2e4ef;
+    font-size: 3rem;
+}
+
+.header-text-custom {
+    font-weight: 700;
+    font-size: 3.5rem;
+    color: #A6B0E5;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(166, 176, 229, 0.4);
+    margin-bottom: 1rem;
+}
+
+.subheader-text-custom {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #b8bbd9;
+    margin-bottom: 2rem;
+    text-align: center;
+
+    padding: 0.5rem;
+    line-height: 4rem;
+}
+
+.language-pill-row,
+.genre-pill-row,
+.length-pill-row {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+}
+
+.language-pill,
+.genre-pill,
+.length-pill {
+    border-radius: 2rem;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    border: 1.5px solid #4a4d5f;
+    color: #e0e3ff;
+    background-color: #2f3140;
+    font-size: 2rem;
+}
+
+.language-pill:hover,
+.genre-pill:hover,
+.length-pill:hover {
+    transform: translateY(-2px);
+    background-color: #3c3f52;
+    border-color: #A6B0E5;
+    color: #ffffff;
+    box-shadow: 0 0 8px rgba(166, 176, 229, 0.3);
+}
+
+.language-pill.active {
+    background-color: #A6B0E5;
+    color: #1e1f26;
+    border-color: #A6B0E5;
+    box-shadow: 0 0 10px rgba(166, 176, 229, 0.5);
+}
+
+.genre-pill.selected {
+    background-color: #6f73a8;
+    color: #fff;
+    border-color: #6f73a8;
+    box-shadow: 0 0 10px rgba(166, 176, 229, 0.3);
+}
+
+.length-pill.chosen {
+    background-color: #8993e2;
+    color: #fff;
+    border-color: #8993e2;
+    box-shadow: 0 0 10px rgba(137, 147, 226, 0.4);
+}
+
+.slide-in {
+    animation: slideIn 0.35s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.preview-card {
+    margin-top: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #3a3c49;
+    background-color: #24252e;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
+    color: #d8daf2;
+}
+
+.preview-card .card-header {
+    font-weight: 600;
+    font-size: 1.25rem;
+    background: #3a3c49;
+    color: #A6B0E5;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 0;
+}
+
+.preview-card .card-body {
+    padding: 1.5rem;
+    background: #1f2028;
+    min-height: 200px;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.generated-lyrics {
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    color: #cfd2f1;
+    line-height: 1.6;
+    background: #2a2b37;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #3d3f4d;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.btn-lg {
+    padding: 0.75rem 2.5rem;
+    font-size: 3rem;
+    border-radius: 2rem;
+    transition: all 0.25s ease-in-out;
+    background-color: #A6B0E5;
+    color: #1e1f26;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+
+.btn-lg:hover {
+    background-color: #c1c7f2;
+    box-shadow: 0 0 12px rgba(166, 176, 229, 0.6);
+}
+
+
+.btn-lg:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #5b5e70;
+    color: #c0c2d6;
+}
+
+.btn-lg-status {
+    padding: 0.75rem 2.5rem;
+    font-size: 3rem;
+    border-radius: 2rem;
+    transition: all 0.25s ease-in-out;
+    background-color: #A6B0E5;
+    color: #1e1f26;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+
+.btn-lg-status:hover {
+    background-color: #c1c7f2;
+    box-shadow: 0 0 12px rgba(166, 176, 229, 0.6);
+}
+
+
+.btn-lg-status:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #5b5e70;
+    color: #c0c2d6;
+}
+
+.form-text.text-muted {
+    color: #999dbb !important;
+    font-size: 1rem;
+}
+
+.loader-lyrics {
+    position: relative;
+    width: 13rem;
+    height: 18rem;
+    background: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 2rem;
+}
+
+.loader-lyrics:before {
+    content: '';
+    position: absolute;
+    width: 54px;
+    height: 25px;
+    left: 50%;
+    top: 0;
+    background-image: radial-gradient(ellipse at center, #0000 24%, #555d8f 25%, #9ea9e6 64%, #0000 65%),
+    linear-gradient(to bottom, #0000 34%, #585b6c 35%);
+    background-size: 12px 12px, 100% auto;
+    background-repeat: no-repeat;
+    background-position: center top;
+    transform: translate(-50%, -65%);
+    box-shadow: 0 -3px rgba(0, 0, 0, 0.25) inset;
+}
+
+.loader-lyrics:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    width: 66%;
+    height: 60%;
+    background: linear-gradient(to bottom, #909de6 30%, #0000 31%);
+    background-size: 100% 16px;
+    animation: writeDown 2s ease-out infinite;
+}
+
+@keyframes writeDown {
+    0% {
+        height: 0%;
+        opacity: 0;
+    }
+    20% {
+        height: 0%;
+        opacity: 1;
+    }
+    80% {
+        height: 65%;
+        opacity: 1;
+    }
+    100% {
+        height: 65%;
+        opacity: 0;
+    }
+}
+
+.copy-button-container {
+    position: relative; /* Essential for positioning the button correctly */
+    display: inline-block;
+    margin-top: 10px; /* Adjust spacing as needed */
+}
+
+/* Styling for the actual button */
+.copy-button {
+    background-color: #4a4f6c;
+    color: #dbdeec;
+    border: solid 1px rgb(166, 176, 229);
+
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 1px;
+    cursor: pointer;
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+    user-select: none; /* Prevent text selection */
+}
+
+/* Hover effect */
+.copy-button:hover {
+    background-color: #a6b0e5; /* Slightly darker green on hover */
+    color: #4a4f6c;
+}
+
+/* Optional: Focus state for accessibility */
+.copy-button:focus {
+    outline: 2px solid rgba(58, 62, 83, 0.5);
+    outline-offset: 2px;
+}
+
+/* Styling for the actual button */
+
+/* Hover effect */
+.copy-button:hover {
+    background-color: #4a4f6c;
+    color: #dbdeec;
+
+}
+
+/* Optional: Focus state for accessibility */
+.copy-button:focus {
+    outline: 2px solid rgba(58, 62, 83, 0.5);
+    outline-offset: 2px;
+}
+
+/* ========================================================= */
+/* MODAL STYLES FOR VOICE RECORDER */
+/* ========================================================= */
+.modal {
+    z-index: 9999 !important; /* Extremely high z-index to win any stacking war */
+    /* Ensure the modal is positioned correctly in the viewport */
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    outline: 0 !important;
+    background-color: #1e1e1e;
+    border: 2px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-image-source: linear-gradient(45deg, #ccc, #9ba6e3, #ccc);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure the backdrop covers the whole screen, and its z-index is just below the modal's */
+.modal-backdrop {
+    z-index: 9998 !important; /* Just below the modal itself */
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+
+}
+
+/* Optional: If the modal content itself is somehow being limited, ensure it has a normal flow */
+.modal-dialog {
+    z-index: 10000 !important; /* Ensure the content box is above the backdrop too */
+    width: 80%;
+}
+
+.modal-content::before {
+    content: "";
+    /* 2. Position the pseudo-element absolutely to cover the parent */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 3. Update the background image URL and adjust its opacity */
+    background: url("../../static/images/modalbg3.jpg"); /* <-- Update File Name Here */
+    background-size: 130rem;
+    background-position: center;
+    opacity: 0.65; /* <-- Update Opacity Here (Use the suggested value from the table) */
+    /* 4. Place the pseudo-element behind the content */
+    z-index: -1;
+}
+
+.modal-content {
+    min-height: 60vh;
+    /* 1. Establish a positioning context for the pseudo-element */
+    position: relative;
+    /* Ensure content is visible above the pseudo-element */
+    z-index: 1;
+    background: linear-gradient(to bottom, rgb(7, 7, 7) 0%, #555555cc 50%, rgb(7, 7, 7) 100%);
+    border: 1px solid #e3e3e3;
+    overflow: hidden; /* Helps contain the pseudo-element within the modal's bounds if rounded corners are used */
+}
+
+.modal-title {
+    font-size: 4rem;
+    padding: 2rem 1rem;
+    background: linear-gradient(to bottom, rgb(33 37 55 / 50%) 0%, hsla(240, 21%, 10%, 0.65) 50%, rgba(33, 37, 55, 0.5) 100%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    border: 1px solid #e3e3e3;
+}
+
+.well {
+    background: linear-gradient(to bottom, rgba(242, 244, 245, 0.67) 0%, hsla(0, 0%, 100%, 0.84) 50%, rgba(242, 244, 245, 0.67) 100%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    padding: 2rem;
+
+}
+
+.well-inner {
+    color: #444963;
+    font-size: x-large;
+    font-weight: bold;
+    margin: 1rem;
+    display: inline-block;
+    padding: 1rem;
+}
+
+.modal-footer {
+    text-align: center;
+    font-size: 4rem;
+    padding: 2rem 1rem;
+    margin: 1rem;
+    background: linear-gradient(to bottom, rgb(33 37 55 / 50%) 0%, hsla(240, 21%, 10%, 0.65) 50%, rgba(33, 37, 55, 0.5) 100%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    border: 1px solid #e3e3e3;
+}
+
+.modal-header, .modal-body, .modal-footer {
+    position: relative;
+    z-index: 2; /* Higher z-index to be on top of the pseudo-element */
+}
+
+/* --- Active Button (Ready for action) --- */
+/* ===== ACTIVE BUTTON ===== */
+.btn-lg-default {
+    padding: 0.45rem 1.3rem; /* bigger feel */
+    font-size: 2.2rem; /* slightly larger text */
+    border-radius: 2.4rem;
+    font-weight: bold;
+    background-color: rgb(57, 65, 113);
+    color: #9ba6e3;
+    border: 2px solid rgba(155, 166, 227, 0.35); /* soft border glow */
+    transition: background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(155, 166, 227, 0.25); /* soft diffuse aura */
+}
+
+/* Hover — subtle dark splash + nicer contrast */
+.btn-lg-default:hover {
+    background-color: rgb(57, 65, 113); /* deeper dark */
+    color: #c7d1ff;
+    border-color: rgba(155, 166, 227, 0.55);
+    box-shadow: 0 0 10px rgba(155, 166, 227, 0.45);
+}
+
+/* Maintain your active look exactly */
+.btn-lg-default.active,
+.btn-lg-default:active,
+.btn-lg-default:focus {
+    background-color: rgb(57, 65, 113);;
+!important;
+    color: #9ba6e3 !important;
+    border-color: rgba(155, 166, 227, 0.55) !important;
+    box-shadow: 0 0 12px rgba(155, 166, 227, 0.35) !important;
+}
+
+/* ===== INACTIVE BUTTON ===== */
+.btn-lg-default-inactive {
+    padding: 0.45rem 1.3rem;
+    font-size: 2.2rem;
+    border-radius: 2.4rem;
+    background-color: rgba(155, 166, 227);
+    color: rgb(57, 65, 113);;;
+    border: 2px solid rgba(155, 166, 227);
+    font-weight: 500;
+    transition: background-color 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s,
+    color 0.25s;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.2px;
+    box-shadow: 0 0 5px rgba(155, 166, 227, 0.25);
+}
+
+/* Hover — gentle darken */
+.btn-lg-default-inactive:hover {
+    background-color: rgba(140, 151, 210);
+    border-color: rgba(155, 166, 227);
+    box-shadow: 0 0 8px rgba(155, 166, 227, 0.35);
+    color: rgba(58, 62, 83, 0.9);
+}
+
+/* Group border if needed */
+.btn-group-prompt {
+    border-color: #d4d7ea;
+}
+
+/* Group border if needed */
+/* ===== Button Group Prompt ===== */
+.btn-group-prompt {
+    display: inline-block; /* ensures it doesn't stretch full width */
+    border: 2px solid rgba(155, 166, 227, 0.35); /* subtle border around the group */
+    border-radius: 2rem;
+    background-color: rgba(217, 219, 232, 0.05); /* subtle transparent background */
+    padding: 0.2rem; /* some padding to give space around buttons */
+}
+
+
+.btn-group-vertical, .btn-group {
+    padding: 1rem;
+
+
+}
+
+/* === RECORDING BUTTON PULSE EFFECT === */
+.pulse-wrapper {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Central button pulse container */
+.sound-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130px;
+    height: 130px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+/* Expanding pulse circles */
+.pulse-circle-record {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 80, 80, 0.4), rgba(255, 80, 80, 0));
+    opacity: 0;
+    animation: pulse-glow 2s infinite;
+    transform: scale(1);
+}
+
+@keyframes pulse-glow {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+    70% {
+        transform: scale(1.4);
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+/* Left & right wave beams */
+.pulse-wave {
+    position: absolute;
+    top: 50%;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 80, 80, 0.6), rgba(255, 255, 255, 0));
+    transform-origin: center;
+    opacity: 0;
+}
+
+
+@keyframes wave-left {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(0) scaleX(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-10px) scaleX(1.3);
+    }
+}
+
+@keyframes wave-right {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(0) scaleX(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(10px) scaleX(1.3);
+    }
+}
+
+/* Active state only runs animations */
+.sound-pulse.active .pulse-circle-record,
+.sound-pulse.active .pulse-wave {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+.sound-pulse .pulse-circle-record,
+.sound-pulse .pulse-wave {
+    animation-play-state: paused;
+}
+
+.loader-tape {
+    margin: 6rem 2rem 2rem 2rem;
+    display: inline-block;
+    width: 310px;
+    height: 140px;
+    overflow: hidden;
+    position: relative;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px; /* doubled */
+    box-shadow: 0px 70px 0 -10px #a7a196,
+    0 -10px 0 0px #ddd,
+    0 -50px 0 -10px #fff,
+    -50px -60px 0 0px #ddd,
+    -50px 60px 0 0px #ddd,
+    50px -60px 0 0px #ddd,
+    50px 60px 0 0px #ddd,
+    40px 20px 0 10px #ddd,
+    40px -20px 0 10px #ddd,
+    -40px -20px 0 10px #ddd,
+    -40px 20px 0 10px #ddd;
+}
+
+.loader-tape:after,
+.loader-tape:before {
+    content: "";
+    border-radius: 100%;
+    margin: 40px 20px;
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    position: absolute;
+    border: 8px dashed #fff;
+    transform: rotate(0deg);
+    box-sizing: border-box;
+    animation: tape 4s linear infinite;
+}
+
+.loader-tape:before {
+    right: 0;
+    box-shadow: 0 0 0 8px #fff, 0 0 0 70px #140f0c; /* doubled border and offset */
+}
+
+.loader-tape:after {
+    left: 0;
+    box-shadow: 0 0 0 8px #fff, 0 0 0 80px #140f0c; /* doubled border and offset */
+}
+
+@keyframes tape {
+    0% {
+        transform: rotate(0deg) scale(0.8); /* doubled scale from 0.4 */
+    }
+    100% {
+        transform: rotate(-360deg) scale(0.8);
+    }
+}
+
+.close {
+    color: #A6B0E5 !important;
+    text-shadow: none !important;
+    font-size: 4rem !important; /* a bit larger for modern UI */
+    font-weight: 700 !important;
+    opacity: 0.85 !important;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #c7ceff !important; /* lighter tint of your color */
+    opacity: 1 !important;
+}
+
+.hide-cursor {
+    cursor: none;
+    pointer-events: none; /* Prevents mouse events like clicks and hovers */
 }

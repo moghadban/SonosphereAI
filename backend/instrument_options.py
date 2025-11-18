@@ -1,205 +1,162 @@
-from gtts import gTTS
-import numpy as np
-from flask import Flask, request, jsonify, render_template_string, send_file
-import os
-import io
+# ===== instrument_options.py =====
 
+# ----------------------------
+# Vocal and Style Configuration
+# ----------------------------
+MALE_VOICE_NAMES = [
+    # English male voice names
+    # Hi, I'm Jake, this is a voice test. I will be saying: the quick brown fox jumps over the lazy dog.
+    "Bryce", "Jake", "Ryan", "Joe", "Noah", "Norman",
 
-# --- Mocking dependencies for local run and deployment ---
-# In a real environment, you would load your model and use real audio libraries.
+    'Li Wei',  # 大家好，我是 Li Wei，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
+    'Jun Hao',  # 大家好，我是 Jun Hao，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
+    'Chen Ming',  # 大家好，我是 Chen Ming，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
 
-# Mocking librosa functions
-class MockLibrosa:
-    def load(self, path):
-        print(f"MOCK: Loading audio from {path}")
-        # Return mock audio data (1 second of silence at 22050 Hz)
-        return np.zeros(22050), 22050
+    'Jean',
+    # Salut, je suis Jean, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
+    'Luc',
+    # Salut, je suis Luc, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
+    'Marc',
+    # Salut, je suis Marc, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
 
-    def output_write_wav(self, path, data, sr):
-        print(f"MOCK: Writing WAV file to {path}")
-        return path
+    # German male voice names
+    'Lukas',
+    # Hallo, ich bin Lukas, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
+    'Felix',
+    # Hallo, ich bin Felix, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
+    'Jonas',
+    # Hallo, ich bin Jonas, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
 
-    class effects:
-        def vocal_extract(self, audio, sr):
-            print("MOCK: Extracting vocals.")
-            # Return mock extracted vocals
-            return audio
+    # Hindi male voice names
+    'Arjun',
+    # नमस्ते, मैं Arjun हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
+    'Rohan',
+    # नमस्ते, मैं Rohan हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
+    'Vikram',
+    # नमस्ते, मैं Vikram हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
 
+    # Italian male voice names
+    'Marco',  # Ciao, sono Marco, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
+    'Lorenzo',  # Ciao, sono Lorenzo, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
+    'Paolo',  # Ciao, sono Paolo, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
 
-librosa = MockLibrosa()
+    # Japanese male voice names
+    'Ren',  # こんにちは、Renです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす。
+    'Haruto',  # こんにちは、Harutoです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす。
+    'Sora',  # こんにちは、Soraです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐの おくやま けふこえて あさきゆめみし ゑひもせす。
 
+    # Korean male voice names
+    'Min Jun',  # 안녕하세요, 저는 Min Jun입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
+    'Ji Hoon',  # 안녕하세요, 저는 Ji Hoon입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
+    'Seung Woo',  # 안녕하세요, 저는 Seung Woo입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
 
-# Mocking Keras model and functions
-class MockModel:
-    def predict(self, features):
-        print(f"MOCK: Predicting vocals for features: {features.flatten()}")
-        # Return mock prediction data (44100 * 2 length array)
-        return np.zeros(88200)
+    # Polish male voice names
+    'Adam',  # Cześć, jestem Adam, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
+    'Tomasz',  # Cześć, jestem Tomasz, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
+    'Marek',  # Cześć, jestem Marek, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
 
+    # Portuguese male voice names
+    'Tiago',  # Olá, sou o Tiago, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
+    'Rafael',  # Olá, sou o Rafael, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
+    'Bruno',  # Olá, sou o Bruno, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
 
-model = MockModel()
+    # Russian male voice names
+    'Ivan',  # Привет, я Ivan, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
+    'Nikolai',  # Привет, я Nikolai, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
+    'Dmitri',  # Привет, я Dmitri, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
 
-# --- Application Setup ---
+    # Spanish male voice names
+    'Diego',  # Hola, soy Diego, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
+    'Javier',
+    # Hola, soy Javier, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
+    'Luis',  # Hola, soy Luis, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
 
-app = Flask(__name__)
+    # Turkish male voice names
+    'Emre',  # Merhaba, ben Emre, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
+    'Can',  # Merhaba, ben Can, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
+    'Mert',  # Merhaba, ben Mert, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
 
-# Define genres
-genres = [
-    'Pop', 'Rock', 'Jazz', 'Classical', 'Hip-Hop', 'Electronic', 'Country', 'Folk', 'R&B', 'Metal',
-    'Reggae', 'Bollywood', 'Arabic', 'Latin', 'Afrobeat', 'K-Pop', 'J-Pop', 'C-Pop',
-    'Musical Theater', 'Opera', 'Choral', 'Instrumental', 'Lo-Fi', 'Ambient', 'New Age', 'Experimental'
+    # Arabic
+    'Omar', 'Sami', 'Ali',
+
 ]
 
-# Define instruments
-# Added 'Full Music' to instruments list
+FEMALE_VOICE_NAMES = [
+    # English female voice names
+    "Amy", "Jill", "Lily", "Rose", "Mia", "Jenny",
 
-instruments = [
-    'Full Music',
-    'Piano', 'Guitar', 'Drums', 'Bass', 'Violin', 'Cello', 'Trumpet', 'Saxophone', 'Flute',
-    'Clarinet', 'Harp', 'Xylophone', 'Marimba', 'Vibraphone', 'Percussion', 'Accordion',
-    'Banjo', 'Mandolin', 'Ukulele', 'Harmonica', 'Bagpipes', 'Sitar', 'Tabla', 'Oud',
-    'Qraqeb', 'Riq', 'Darbuka'
+    # Chinese female voice names
+    'Mei Lin',  # 大家好，我是 Mei Lin，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
+    'Xiao Yan',  # 大家好，我是 Xiao Yan，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
+    'Lian Hua',  # 大家好，我是 Lian Hua，这是一个语音测试。我将要说的是： 举杯邀明月对影成三人。
+
+    # French female voice names (Using the translated general English pangram)
+    'Claire',
+    # Salut, je suis Claire, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
+    'Sophie',
+    # Salut, je suis Sophie, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
+    'Elise',
+    # Salut, je suis Elise, ceci est un test vocal. Je dirai : Le rapide renard brun saute par-dessus le chien paresseux.
+
+    'Anna',
+    # Hallo, ich bin Anna, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
+    'Mila',
+    # Hallo, ich bin Mila, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
+    'Lena',
+    # Hallo, ich bin Lena, dies ist eine Probeaufnahme. Ich werde sagen: Ein kleiner brauner Fuchs springt über den langsamen Hund.
+
+    # Hindi female voice names
+    'Asha',
+    # नमस्ते, मैं Asha हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
+    'Mira',
+    # नमस्ते, मैं Mira हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
+    'Priya',
+    # नमस्ते, मैं Priya हूँ, यह एक आवाज़ का परीक्षण है। मैं कहूँगा: ज्ञानवान् होकर भी, मनुष्य अपनी बुद्धि और क्षमता से ही सब कुछ नहीं कर सकता।
+
+    # Italian female voice names
+    'Sofia',  # Ciao, sono Sofia, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
+    'Giulia',  # Ciao, sono Giulia, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
+    'Elena',  # Ciao, sono Elena, questa è una prova vocale. Dirò: Pranzo d'acqua fa buon brodo.
+
+    # Japanese female voice names
+    'Yuna',  # こんにちは、Yunaです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす。
+    'Hana',  # こんにちは、Hanaです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす。
+    'Aiko',  # こんにちは、Aikoです。これは音声テストです。私はこう言います：いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす。
+
+    # Korean female voice names
+    'Seo Yeon',  # 안녕하세요, 저는 Seo Yeon입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
+    'Min Ji',  # 안녕하세요, 저는 Min Ji입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
+    'Ha Neul',  # 안녕하세요, 저는 Ha Neul입니다. 이것은 음성 테스트입니다. 제가 말할 문장은: 다람쥐 헌 쳇바퀴에 타고파.
+
+    # Polish female voice names
+    'Kasia',  # Cześć, jestem Kasia, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
+    'Magda',  # Cześć, jestem Magda, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
+    'Zofia',  # Cześć, jestem Zofia, to jest test głosu. Powiem: Pchnąć w tę łódź jeża lub oś skrzyń fig.
+
+    # Portuguese female voice names
+    'Inês',  # Olá, sou a Inês, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
+    'Marina',  # Olá, sou a Marina, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
+    'Carla',  # Olá, sou a Carla, este é um teste de voz. Eu direi: Um pequeno graxaim é um animal ágil e veloz.
+
+    # Russian female voice names
+    'Nadia',  # Привет, я Nadia, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
+    'Irina',  # Привет, я Irina, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
+    'Katya',  # Привет, я Katya, это тест голоса. Я скажу: В чащах юга жил бы цитрус? Да, но фальшивый экземпляр!
+
+    # Spanish female voice names
+    'Lucia',  # Hola, soy Lucia, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
+    'Carmen',
+    # Hola, soy Carmen, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
+    'Isabella',
+    # Hola, soy Isabella, esta es una prueba de voz. Diré: El veloz murciélago hindú comía feliz cardillo y kiwi.
+
+    # Turkish female voice names
+    'Leyla',  # Merhaba, ben Leyla, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
+    'Merve',  # Merhaba, ben Merve, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
+    'Aylin',  # Merhaba, ben Aylin, bu bir ses testidir. Şunu söyleyeceğim: Pijamalı hasta yağız şoföre çabucak güvendi.
+
+    # Arabic
+    'Reem', 'Hind', 'Rana'
 ]
 
-
-# Define languages
-languages = [
-    'English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Chinese', 'Japanese',
-    'Korean', 'Arabic', 'Russian', 'Hindi', 'Bengali', 'Punjabi', 'Urdu', 'Telugu', 'Tamil',
-    'Marathi', 'Gujarati', 'Kannada', 'Malayalam', 'Odia', 'Sindhi', 'Swahili', 'Yoruba',
-    'Zulu', 'Amharic', 'Hausa', 'Igbo', 'Shona', 'Wolof'
-]
-
-# Define vocal styles
-vocal_styles = [
-    'Male', 'Female', 'Boy', 'Girl'
-]
-
-# Define artist styles
-artist_styles = [
-    'Ariana Grande', 'Beyoncé', 'Katy Perry', 'Lady Gaga', 'Taylor Swift', 'Justin Bieber',
-    'Shawn Mendes', 'Camila Cabello', 'Harry Styles', 'Dua Lipa'
-]
-
-# Mock data for other tools (as referenced in the original index.html)
-mock_edits = [
-    {'code': 'pitch', 'name': 'Change Pitch'},
-    {'code': 'tempo', 'name': 'Adjust Tempo'},
-    {'code': 'quantize', 'name': 'Quantize Timing'},
-]
-
-
-def generate_vocals(
-        instrument,
-        genre,
-        language,
-        vocal_style,
-        artist_style,
-        voice_upload=None,
-        text_input=None):
-    output_filename = 'vocals.mp3'
-
-    if voice_upload:
-        # Save the uploaded file temporarily (mocked)
-        voice_upload.save(output_filename)
-        print(f"Processing uploaded file: {output_filename}")
-        # In a real app, you would process this file with librosa
-        return output_filename  # Return the path/filename for the result page
-
-    elif text_input:
-        # Generate vocals from text input using gTTS
-        try:
-            tts = gTTS(text=text_input, lang='en')
-            # Save to a temporary file in memory or disk
-            tts.save(output_filename)
-            print(f"Generated text-to-speech audio: {output_filename}")
-            return output_filename
-        except Exception as e:
-            print(f"gTTS error: {e}")
-            return None
-
-    else:
-        # Generate vocals using the mock model logic
-        input_features = np.array([
-            instruments.index(instrument),
-            genres.index(genre),
-            languages.index(language),
-            vocal_styles.index(vocal_style),
-            artist_styles.index(artist_style)
-        ])
-        input_features = input_features.reshape(1, 5)
-
-        # Mock model prediction
-        vocals_data = model.predict(input_features)
-
-        # Mock writing WAV file
-        librosa.output_write_wav(output_filename, vocals_data, 44100)
-
-        return output_filename
-
-
-# Simplified rendering logic using a basic template string
-# In a real Flask app, 'render_template' would be used.
-# Since we cannot provide multiple files, this acts as the main handler.
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        # Check which form was submitted (the full vocal form is the main focus)
-        if 'genre' in request.form:
-            instrument = request.form['instrument']
-            genre = request.form['genre']
-            language = request.form['language']
-            vocal_style = request.form['vocal_style']
-            artist_style = request.form['artist_style']
-            voice_upload = request.files.get('voice_upload')
-            text_input = request.form.get('text_input')
-
-            # Basic validation
-            if not text_input and not voice_upload and not all(
-                    [instrument, genre, language, vocal_style, artist_style]):
-                return "Error: Please provide all required generation parameters, or a text input, or a voice upload.", 400
-
-            vocals_file = generate_vocals(
-                instrument, genre, language, vocal_style, artist_style, voice_upload, text_input
-            )
-
-            if vocals_file:
-                # In a real Flask app, you would render 'output.html'
-                # Here, we will just return a simple message since we can't send files properly.
-                return f"""
-                <div style="padding: 2rem; text-align: center; font-family: sans-serif;">
-                    <h1>Generation Complete!</h1>
-                    <p>File created: <strong>{vocals_file}</strong></p>
-                    <p>Your generated track using the style of <strong>{artist_style}</strong> ({genre}) is ready.</p>
-                    <a href="/" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;">Go Back</a>
-                </div>
-                """
-            else:
-                return "Error generating audio.", 500
-
-        # Handle other, simpler form submissions if they were still present in the UI
-        elif request.form.get('instrument'):
-            # This is the old, simple instrument form submission
-            return f"MOCK: Instrument generation requested for {request.form['instrument']}.", 200
-
-    # GET request: Render the main page. In a real app, this would render index.html
-    # Since we can't render the Twig template, I will demonstrate the full HTML structure
-    # in the separate file, assuming the Flask app passes this context:
-    context = {
-        'instruments': instruments,
-        'genres': genres,
-        'languages': languages,
-        'vocal_styles': vocal_styles,
-        'artist_styles': artist_styles,
-        'edits': mock_edits
-    }
-
-    # Returning a placeholder for the index page since the full UI is in the next file block
-    return """
-    <h1>SonosphereAI Backend Mock</h1>
-    <p>Run the 'index.html' file to see the intended frontend structure.</p>
-    """
-
-# We do not run the app here as the file blocks are just for structure.
-# if __name__ == '__main__':
-#     app.run(debug=True)
+VOCAL_STYLES = ["Random", "Male", "Female"]

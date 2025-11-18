@@ -1,5 +1,11 @@
-# .gitignore
- ./backend/venv/
- /backend/venv/
-./venv/
-/venv/ 
+# Python virtual environments
+venv/
+backend/venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+backend/.ipynb_checkpoints/
+
+# Python bytecode
+__pycache__/
+backend/__pycache__/

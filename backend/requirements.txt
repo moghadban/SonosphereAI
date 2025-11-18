@@ -6,3 +6,15 @@ librosa
 numpy
 scikit-learn
 gTTS
+scamp
+transformers
+torch
+pydub
+pyttsx3
+boto3
+coqui-tts
+markovify
+pandas
+torch
+torchvision
+nltk

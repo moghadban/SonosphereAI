@@ -1,4 +1,20 @@
-# .gitignore
- ./backend/venv/
- /backend/venv/
- 
+# Python virtual environment
+/backend/venv/
+./backend/venv/
+
+# Jupyter Notebook checkpoints
+/backend/.ipynb_checkpoints/
+./backend/.ipynb_checkpoints/
+
+# Python bytecode
+/backend/__pycache__/
+./backend/__pycache__/
+
+# Frontend generated outputs
+/frontend/static/outputs/*
+./frontend/static/outputs/*
+/frontend/static/lyrics_corpora/*
+./frontend/static/lyrics_corpora/*
+
+# IDE/project files
+.idea/
