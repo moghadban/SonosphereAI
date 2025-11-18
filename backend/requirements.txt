@@ -8,9 +8,7 @@ scikit-learn
 gTTS
 scamp
 transformers
-torch
 pydub
-pyttsx3
 boto3
 coqui-tts
 markovify
@@ -19,3 +17,7 @@ torch
 torchvision
 nltk
 gdown
+better-profanity
+denoiser
+noisereduce
+ffmpeg
