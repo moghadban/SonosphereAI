@@ -48,6 +48,9 @@ The entire system is powered by an integrated suite of advanced AI models:
 
 The Sonic Studio is focused on efficiency, allowing you to create an entire song using pre-trained, high-quality AI voices.
 
+---
+![Sonic Studio](frontend/static/images/instr_opt.png)
+---
 * **Voice Source:** You choose from a variety of male and female voices across **14 supported languages** (English, Chinese, French, German, Spanish, etc.).
 * **Core AI Technology:** Instrumental generation is primarily driven by **Musicgen**. The vocals are created simultaneously by the integrated **Bark AI** or **Coqui XTTS** model you select.
 * **Creative Input:** Guide the generation using a **Text Prompt**, selecting a **Genre** (Pop, Rock, Hip-Hop, etc.), and focusing on specific **Instruments**.
@@ -62,7 +65,12 @@ The Sonic Studio is focused on efficiency, allowing you to create an entire song
 
 The Vocal Studio is dedicated to **Vocal Cloning** and **Pitch Refinement**, allowing you to use your own recorded voice for the track.
 
+---
+![Noise Reduction (Spectral Masking)](frontend/static/images/vocal_options.png)
+---
 * **Voice Source:** You **record a sample** directly in-app. This recording is then cloned or used as the basis for the final song.
+
+ ![Noise Reduction (Spectral Masking)](frontend/static/images/recording_modal.png)
 * **Core AI Technology:** While it relies on **Musicgen** to create the instrumental track and uses **Bark AI / Coqui XTTS** for internal processing and analysis, the main focus is on high-fidelity **vocal processing** (Noise Reduction, Pitch Correction) applied to your uploaded audio.
 * **Process:** Your voice is cleaned and refined before being mixed with the instrumental track.
 * **Text-to-Speech (TTS) Only Mode:** The studio allows you to generate just the synthesized vocal track without the instrumental accompaniment. This functionality is essential for reading text using your own cloned/recorded voice, perfect for custom narration, audio letters, or creating unique vocal samples.
@@ -78,7 +86,9 @@ The Vocal Studio is dedicated to **Vocal Cloning** and **Pitch Refinement**, all
 
 The Lyrics Studio provides a massive creative jumpstart, helping you generate custom, unique lyrics tailored to your specific song parameters.
 
-
+---
+![Noise Reduction (Spectral Masking)](frontend/static/images/lyrics_generate.png)
+---
 
 * **Core AI Technology: Markovify:** The system is powered by the **`markovify`** library, which builds a complex statistical model of word relationships from a vast database of lyrics. This allows it to construct new verses that are grammatically sound and possess the stylistic coherence of real songs.
 * **Lyrics Database & Customization:**
@@ -94,6 +104,9 @@ The Lyrics Studio provides a massive creative jumpstart, helping you generate cu
 
 This section of the Application ensures professional clarity by automatically cleaning your audio, eliminating common recording issues like hiss, static, or environmental background noise.
 
+---
+![Noise Reduction (Spectral Masking)](frontend/static/images/noise_reduce.png)
+---
 * **Process Overview:** As soon as a vocal track is created or uploaded, it is routed through an advanced **denoising** stage. This employs sophisticated algorithms (from libraries like **`noisereduce`** and **`denoiser`**) to analyze the audio spectrum, identify the noise profile, and surgically remove the unwanted frequencies.
 * **Final Output:** The finished song is saved in the user's selected file format (WAV, MP3, FLAC, OPUS, and OGG).
 
@@ -103,10 +116,20 @@ This section of the Application ensures professional clarity by automatically cl
 To showcase the effectiveness of this automated process, here are two samples illustrating the difference between an uncleaned source file and the final output:
 
 * **Original Audio:** Here is a sample of the original uncleaned file that has bunch of clicks and noises.
-    \[Place Audio Embed of Uncleaned File Here]
+
+Noise File:
+
+https://github.com/user-attachments/assets/9a9c4ae4-a68a-438b-ac56-f92b2d3b07c6
+
+
 
 * **Cleaned Output:** This is the output after using the app's professional audio cleanup pipeline, where you hear nothing but the pure, clean vocal.
     \[Place Audio Embed of Cleaned File Here]
+
+Denoised File:
+
+
+https://github.com/user-attachments/assets/04e1b069-462e-48f7-9f7e-817fb0336b9f
 
 
 
