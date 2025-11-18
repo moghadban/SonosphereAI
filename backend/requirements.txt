@@ -21,3 +21,4 @@ better-profanity
 denoiser
 noisereduce
 ffmpeg
+hf_xet
