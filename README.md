@@ -1,7 +1,7 @@
 # SonosphereAI 🎶
 
 ## Description
-**SonosphereAI** is an AI-powered audio generation platform designed to seamlessly blend music and voice synthesis. It enables users to create musical compositions by transforming vocals into instrumentals and vice versa. The platform supports multiple instruments and languages, and includes features like noise reduction and note editing for refined audio output. It's an innovative tool for musicians and poets to transform their creative ideas into complete musical pieces.
+**SonosphereAI** is a unified, AI-powered music production suite designed to streamline the entire creative workflow from concept to track. Leveraging state-of-the-art models like Musicgen for instrumentals and Bark AI/Coqui XTTS for voice synthesis, the platform offers two dedicated environments: the Sonic Studio for diverse, multi-lingual AI voices, and the Vocal Studio for personalized voice cloning and pitch refinement. Core features include a Markovify-driven Lyrics Studio, an automated Quality Assurance pipeline with professional Noise Reduction and Auto-Tuning, and flexible output for generating either a complete song or Text-to-Speech narration. It is the end-to-end tool for creators seeking to transform ideas into broadcast-ready, high-fidelity musical pieces.
 
 ---
 
@@ -16,6 +16,17 @@ This application provides a complete, professional workflow for music creation, 
 * **Bark AI & Coqui XTTS:** For highly expressive and multi-lingual Text-to-Speech (TTS) vocal synthesis.
 * **Markovify:** For generating coherent, contextually relevant song lyrics.
 
+### ⚙️ Supported Capabilities Overview
+
+The SonosphereAI platform offers extensive support across multiple dimensions for deep customization of your music.
+
+| Category | Supported Items | Notes |
+| :--- | :--- | :--- |
+| **Instruments** | Full Music, Piano, Guitar, Violin, Drums, Bass, Flute, Bell | Used by Musicgen to tailor instrumental tracks. |
+| **Genres** | Pop, Rock, Hip-Hop, Electronic, Country, R&B, Metal, Reggae | Guides the style of both music and lyric generation. |
+| **TTS (Coqui XTTS)** | English, Chinese, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish, Arabic | Provides diverse, high-fidelity, and multi-lingual voice synthesis. |
+| **TTS (Bark AI)** | English, Chinese, French, German, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Turkish | Used for voice cloning in the Vocal Studio (13 languages). |
+| **Lyrics Studio** | English, Chinese, French, German, Italian, Russian, Spanish, Arabic | Languages supported by the Markovify text generator (8 languages). |
 ---
 
 ## 🎙️ Sonic Studio & Vocal Studio: The Creation Workflow
@@ -100,7 +111,7 @@ To showcase the effectiveness of this automated process, here are two samples il
 
 
 ---
-# ⚙️ Setup, Installation, and Configuration
+# 🛠️ Setup, Installation, and Configuration 
 ---
 
 ## Installation
