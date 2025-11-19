@@ -153,7 +153,8 @@ https://github.com/user-attachments/assets/04e1b069-462e-48f7-9f7e-817fb0336b9f
 
 3. **Clone the repository:**  
    ```bash
-   git clone https://github.com/MOGHADBAN/SonosphereAI.git)```
+   git clone https://github.com/MOGHADBAN/SonosphereAI.git
+   ```
 
 4.  **Navigate to the backend directory:**
 
@@ -202,7 +203,10 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
       This script handles the Google Drive security checks, downloads the file, and places it in the correct location.
       
       **📍 Expected File Location:**
-      The database file will be placed here relative to the root directory: ``` ../frontend/static/lyrics_corpora/lyrics_corpus.db ```
+      The database file will be placed here relative to the root directory:
+      ```bash
+      ../frontend/static/lyrics_corpora/lyrics_corpus.db
+      ```
       
       **⚙️ Option 2: Manual Download (Backup)**
       Use this option only if the automatic script (Option 1) fails.
@@ -225,7 +229,7 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
   
 
 
-9. **Run the application:**
+10. **Run the application:**
 
     ```bash
     python3 app.py
