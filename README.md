@@ -129,7 +129,7 @@ https://github.com/user-attachments/assets/9a9c4ae4-a68a-438b-ac56-f92b2d3b07c6
 
 
 * **Cleaned Output:** This is the output after using the app's professional audio cleanup pipeline, where you hear nothing but the pure, clean vocal.
-    \[Place Audio Embed of Cleaned File Here]
+
 
 Denoised File:
 
@@ -188,7 +188,7 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
       **⚙️ Option 1: Automatic Setup Script (Recommended)**
       This is the fastest and most reliable way to get the database file.
   
-       **1. Prerequisite**
+      **1. Prerequisite**
       Ensure the `gdown` library is installed on your system:
       ```bash
       pip install gdown
