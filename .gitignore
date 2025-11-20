@@ -10,6 +10,15 @@
 /backend/__pycache__/
 ./backend/__pycache__/
 
+# Distribution and build files
+dist/
+build/
+*.egg-info/
+
+# PyPI configuration (contains sensitive token)
+.pypirc
+/.pypirc
+
 # Frontend generated outputs
 /frontend/static/outputs/*
 ./frontend/static/outputs/*
@@ -18,3 +27,5 @@
 
 # IDE/project files
 .idea/
+MANIFEST.in
+READMEPYPI.md
