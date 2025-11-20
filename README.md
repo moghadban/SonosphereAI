@@ -148,53 +148,43 @@ https://github.com/user-attachments/assets/04e1b069-462e-48f7-9f7e-817fb0336b9f
 1. **Install Python:**  
    Download and install Python from [python.org](https://www.python.org/downloads/).
 
-2. **(Optional) Anaconda:**  
-   If you prefer using Anaconda, you can — but note: PyCharm (or a plain `venv`) tends to handle this project more predictably. If you do use Anaconda, make sure your environment is clean and dedicated to this project.
+   
 
 3. **Clone the repository:**  
    ```bash
    git clone https://github.com/MOGHADBAN/SonosphereAI.git
    ```
 
-4.  **Navigate to the backend directory:**
+   
+
+4.  **Create a virtual environment:**
 
     ```bash
-    cd SonosphereAI/backend
-    ```
-
-5.  **Create a virtual environment:**
-
-    ```bash
-    python -m venv venv
+    python -m venv backend/venv
     ```
 
     
 
-6.  **Activate the virtual environment:**
+5.  **Activate the virtual environment:**
     
-    -   **Windows:** `venv\Scripts\activate.bat`
-    -   **Bash/macOS:** `source venv/bin/activate`
+    -   **Windows:** `backend\venv\Scripts\activate.bat`
+    -   **Bash/macOS:** `source backend/venv/bin/activate`
         
 
-7.  **Install dependencies:**
+
+6.  **Install dependencies:**
     ```bash
-    pip3 install -r requirements.txt
+    pip install sonosphereai
     ```
 
-8. **Lyrics Database Setup:**
+7. **Lyrics Database Setup:**
 The Lyrics Studio requires a large song data corpus to train the **Markovify AI**. Since the database file is too large to include directly in the repository, we use the dedicated `gdown` utility to ensure a reliable download from Google Drive.
 
   
       **⚙️ Option 1: Automatic Setup Script (Recommended)**
       This is the fastest and most reliable way to get the database file.
   
-      **1. Prerequisite**
-      Ensure the `gdown` library is installed on your system:
-      ```bash
-      pip install gdown
-      ```
-      
-      **2. Run the Setup Script**
+      **Run the Setup Script**
       Execute the script from your terminal in the directory ```.\SonosphereAI\backend``` 
       ```bash
       python setup_database.py
@@ -229,7 +219,7 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
   
 
 
-10. **Run the application:**
+8. **Run the application:**
 
     ```bash
     python3 app.py
