@@ -21,8 +21,8 @@ from werkzeug.utils import secure_filename
 # Directories & Persistent Paths
 # ====================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TMP_DIR = os.path.join(os.getenv('TEMP', os.path.join(BASE_DIR, 'tmp')), 'sonosphere_tmp')
 OUTPUT_DIR = os.path.normpath(os.path.join(BASE_DIR, '../frontend/static/outputs'))
+TMP_DIR = os.path.normpath(os.path.join(BASE_DIR, '../frontend/static/temp'))
 
 os.makedirs(TMP_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
