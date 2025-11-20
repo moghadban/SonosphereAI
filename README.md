@@ -187,7 +187,7 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
       **Run the Setup Script**
       Execute the script from your terminal in the directory ```.\SonosphereAI\backend``` 
       ```bash
-      python setup_database.py
+      python backend/setup_database.py
       ```
       
       This script handles the Google Drive security checks, downloads the file, and places it in the correct location.
@@ -222,7 +222,7 @@ The Lyrics Studio requires a large song data corpus to train the **Markovify AI*
 8. **Run the application:**
 
     ```bash
-    python3 app.py
+    python backen/app.py
     ```
  
 ## Usage
